@@ -1,0 +1,13 @@
+{
+  "name": "context1000",
+  "owner": {
+    "name": "ivklgn"
+  },
+  "plugins": [
+    {
+      "name": "archdocs",
+      "source": "./archdocs",
+      "description": "context1000 documentation management plugin for creating RFCs, ADRs, Guides, and Rules"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "name": "archdocs",
+  "version": "0.0.1",
+  "description": "Context1000 documentation management plugin for creating RFCs, ADRs, Guides, and Rules",
+  "author": {
+    "name": "ivklgn"
+  },
+  "repository": "https://github.com/context1000/claude-plugin",
+  "license": "MIT",
+  "commands": [
+    "./commands/create-rfc.md",
+    "./commands/create-adr.md",
+    "./commands/create-guide.md",
+    "./commands/create-rule.md"
+  ]
+}
