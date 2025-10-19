@@ -6,78 +6,38 @@ Create a new Architecture Decision Record (ADR) document in the context1000 docu
 
 You are an ADR documentation assistant. When this command is invoked:
 
-1. **Parse the ADR title** from the user's input
-2. **Generate the next ADR number** by checking existing ADRs in the `/adrs` directory
-3. **Create the ADR file** with the naming convention: `adrs/ADR-{number}-{title-slug}.md`
+1. **Check for .context1000 directory** - If `.context1000` doesn't exist in the project root, create it along with the subdirectory structure: `.context1000/decisions/adr/`
+2. **Parse the ADR title** from the user's input
+3. **Create the ADR file** with the naming convention: `.context1000/decisions/adr/{title-slug}.adr.md`
 4. **Populate the ADR template** with the following structure:
 
 ```markdown
-# ADR-{number}: {Title}
+---
+name: {title-slug} # Unique identifier for the ADR
+title: {Title} # Human-readable title
+status: draft # accepted, rejected, draft
+tags: [] # Categorization tags
+related: # Cross-references to related documents (one or many)
+  rfcs: [] # Related RFCs by name
+  adrs: [] # Related ADRs by name
+  rules: [] # Related rules by name
+  guides: [] # Related guides by name
+  projects: [] # Related projects by name
+---
 
-**Status:** Proposed
-**Date:** {YYYY-MM-DD}
-**Deciders:** {Git user name or prompt for deciders}
+# {Title}
 
-## Context and Problem Statement
+## Context
 
-What is the issue that we're addressing? What constraints exist? What is the context of this decision?
+What is the issue that we're seeing that is motivating this decision or change?
 
-## Decision Drivers
+## Decision
 
-* Key factors that influence the decision
-* Technical requirements
-* Business constraints
-* Team capabilities
+What is the change that we're proposing and/or doing?
 
-## Considered Options
+## Consequences
 
-* **Option 1:** [Description]
-* **Option 2:** [Description]
-* **Option 3:** [Description]
-
-## Decision Outcome
-
-**Chosen option:** "[Option X]"
-
-### Rationale
-
-Explanation of why this option was chosen.
-
-### Positive Consequences
-
-* Good outcome 1
-* Good outcome 2
-
-### Negative Consequences
-
-* Bad outcome 1
-* Bad outcome 2
-
-## Pros and Cons of the Options
-
-### Option 1
-
-* **Pros:**
-  - Advantage 1
-  - Advantage 2
-* **Cons:**
-  - Disadvantage 1
-  - Disadvantage 2
-
-### Option 2
-
-* **Pros:**
-  - Advantage 1
-  - Advantage 2
-* **Cons:**
-  - Disadvantage 1
-  - Disadvantage 2
-
-## Links and References
-
-* Related ADRs
-* External documentation
-* Discussion threads
+What becomes easier or more difficult to do because of this change?
 ```
 
 ## Usage Examples
@@ -90,31 +50,33 @@ Explanation of why this option was chosen.
 
 ## Behavior
 
-1. Check if `/adrs` directory exists, create if needed
-2. Scan existing ADRs to determine the next sequential number (e.g., ADR-001, ADR-002)
-3. Convert the title to a URL-friendly slug (lowercase, hyphens)
-4. Create the file with the template
-5. Try to get the git user name for the deciders field, otherwise prompt
+1. Check if `.context1000` directory exists in the project root, create if needed
+2. Check if `.context1000/decisions/adr/` directory exists, create the full path if needed
+3. Convert the title to a URL-friendly slug (lowercase, hyphens) for the `name` field
+4. Create the file with naming format: `{title-slug}.adr.md` in `.context1000/decisions/adr/`
+5. Populate the YAML frontmatter with name, title, status (default: draft), and empty arrays for tags and related documents
 6. Confirm creation and provide the file path to the user
 
-## Status Transitions
+## Status Values
 
-ADRs typically follow these status transitions:
-- **Proposed:** Under discussion
-- **Accepted:** Decision has been made
-- **Deprecated:** No longer relevant
-- **Superseded:** Replaced by another ADR
+ADRs use these status values:
+- **draft:** Under discussion or being written
+- **accepted:** Decision has been made and approved
+- **rejected:** Decision was considered but not accepted
 
 ## Output Format
 
 After creating the ADR, display:
 ```
-✓ Created ADR-{number}: {Title}
-  Location: adrs/ADR-{number}-{title-slug}.md
+✓ Created ADR: {Title}
+  Location: .context1000/decisions/adr/{title-slug}.adr.md
+  Name: {title-slug}
+  Status: draft
 
 Next steps:
-1. Document the context and problem statement
-2. List all considered options with pros/cons
-3. Make the decision and document the rationale
-4. Update status as the decision is finalized
+1. Document the context that motivates this decision
+2. Describe the decision being made
+3. Explain the consequences of this change
+4. Add relevant tags and related documents in the frontmatter
+5. Update status to 'accepted' or 'rejected' when finalized
 ```

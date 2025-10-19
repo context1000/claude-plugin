@@ -6,47 +6,60 @@ Create a new Request for Comments (RFC) document in the context1000 documentatio
 
 You are an RFC documentation assistant. When this command is invoked:
 
-1. **Parse the RFC title** from the user's input
-2. **Generate the next RFC number** by checking existing RFCs in the `/rfcs` directory
-3. **Create the RFC file** with the naming convention: `rfcs/RFC-{number}-{title-slug}.md`
+1. **Check for .context1000 directory** - If `.context1000` doesn't exist in the project root, create it along with the subdirectory structure: `.context1000/decisions/rfc/`
+2. **Parse the RFC title** from the user's input
+3. **Create the RFC file** with the naming convention: `.context1000/decisions/rfc/{title-slug}.rfc.md`
 4. **Populate the RFC template** with the following structure:
 
 ```markdown
-# RFC-{number}: {Title}
-
-**Status:** Draft
-**Created:** {YYYY-MM-DD}
-**Author:** {Git user name or prompt for author}
+---
+name: {title-slug} # Unique identifier for the RFC
+title: {Title} # Human-readable title
+status: draft # accepted, rejected, draft
+tags: [] # Categorization tags
+related: # Cross-references to related documents (one or many)
+  rfcs: [] # Related RFCs by name
+  adrs: [] # Related ADRs by name
+  rules: [] # Related rules by name
+  guides: [] # Related guides by name
+  projects: [] # Related projects by name
+---
 
 ## Summary
 
-Brief one-paragraph summary of the proposal.
+Who needs it and what changes in one paragraph.
 
-## Motivation
+## Context and problem
 
-Why are we doing this? What use cases does it support? What problems does it solve?
+Current behavior/limitations, scope of impact.
 
-## Detailed Design
+## Proposed solution
 
-This is the bulk of the RFC. Explain the design in enough detail for somebody familiar with the system to understand, and for somebody familiar with the implementation to implement.
-
-This should get into specifics and corner-cases, and include examples of how the feature is used.
+- Architectural idea (1-3 bullet points).
+- API/contracts (brief, code block if necessary).
+- Data/schema/migrations (one-two sentences).
 
 ## Alternatives
 
-What other designs have been considered? What is the impact of not doing this?
+Why not X and Y (one sentence per alternative).
 
-## Adoption Strategy
+## Impact
 
-How will existing users adopt this feature? Is this a breaking change?
+- Performance/cost
+- Compatibility/migrations
+- Security/privacy
 
-## Unresolved Questions
+## Implementation plan
 
-What parts of the design are still to be determined?
+Milestones with estimates: M1, M2, M3. Rollback plan in one sentence.
 
-## References
+## Success metrics
 
-- Related documents or resources
+How we will understand what worked (numbers/threshold/date).
+
+## Risks and open questions
+
+A short list
 ```
 
 ## Usage Examples
@@ -58,22 +71,27 @@ What parts of the design are still to be determined?
 
 ## Behavior
 
-1. Check if `/rfcs` directory exists, create if needed
-2. Scan existing RFCs to determine the next sequential number (e.g., RFC-001, RFC-002)
-3. Convert the title to a URL-friendly slug (lowercase, hyphens)
-4. Create the file with the template
-5. Try to get the git user name for the author field, otherwise prompt
+1. Check if `.context1000` directory exists in the project root, create if needed
+2. Check if `.context1000/decisions/rfc/` directory exists, create the full path if needed
+3. Convert the title to a URL-friendly slug (lowercase, hyphens) for the `name` field
+4. Create the file with naming format: `{title-slug}.rfc.md` in `.context1000/decisions/rfc/`
+5. Populate the YAML frontmatter with name, title, status (default: draft), and empty arrays for tags and related documents
 6. Confirm creation and provide the file path to the user
 
 ## Output Format
 
 After creating the RFC, display:
 ```
-✓ Created RFC-{number}: {Title}
-  Location: rfcs/RFC-{number}-{title-slug}.md
+✓ Created RFC: {Title}
+  Location: .context1000/decisions/rfc/{title-slug}.rfc.md
+  Name: {title-slug}
+  Status: draft
 
 Next steps:
-1. Fill in the RFC sections with detailed information
-2. Share with the team for discussion
-3. Update status as the RFC progresses (Draft → Proposed → Accepted → Implemented)
+1. Write a one-paragraph summary of who needs it and what changes
+2. Document the context, problem, and proposed solution
+3. List alternatives, impact, and implementation plan
+4. Add success metrics and identify risks/open questions
+5. Add relevant tags and related documents in the frontmatter
+6. Update status to 'accepted' or 'rejected' when finalized
 ```
