@@ -1,16 +1,44 @@
 {
-  "name": "archdocs",
-  "version": "0.0.1",
-  "description": "Context1000 documentation management plugin for creating RFCs, ADRs, Guides, and Rules",
-  "author": {
-    "name": "ivklgn"
-  },
-  "repository": "https://github.com/context1000/claude-plugin",
-  "license": "MIT",
+  "name": "context1000",
+  "version": "1.0.0",
+  "description": "Architecture analysis and documentation management plugin for context1000 framework",
+  "author": "Context1000 Team",
+  "homepage": "https://github.com/your-org/context1000-plugin",
+  "agents": [
+    {
+      "name": "architecture-analyzer",
+      "description": "Analyzes codebase architecture and automatically generates ADRs and RFCs",
+      "file": "agents/architecture-analyzer.md"
+    },
+    {
+      "name": "doc-consistency-checker",
+      "description": "Validates and maintains consistency across context1000 documentation",
+      "file": "agents/doc-consistency-checker.md"
+    }
+  ],
   "commands": [
-    "./commands/create-rfc.md",
-    "./commands/create-adr.md",
-    "./commands/create-guide.md",
-    "./commands/create-rule.md"
-  ]
+    {
+      "name": "create-adr",
+      "description": "Create a new Architecture Decision Record",
+      "file": "commands/create-adr.md"
+    },
+    {
+      "name": "create-rfc",
+      "description": "Create a new Request for Comments",
+      "file": "commands/create-rfc.md"
+    },
+    {
+      "name": "create-rule",
+      "description": "Create a new development/architecture rule",
+      "file": "commands/create-rule.md"
+    },
+    {
+      "name": "create-guide",
+      "description": "Create a new technical guide",
+      "file": "commands/create-guide.md"
+    }
+  ],
+  "hooks": {
+    "file": "hooks/hooks.json"
+  }
 }
