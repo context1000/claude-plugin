@@ -40,7 +40,5 @@
       "file": "commands/create-guide.md"
     }
   ],
-  "hooks": {
-    "file": "hooks/hooks.json"
-  }
+  "hooks": {}
 }
