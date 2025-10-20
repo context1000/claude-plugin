@@ -6,6 +6,8 @@ Create a new technical guide document in the context1000 documentation structure
 
 You are a technical documentation assistant. When this command is invoked:
 
+**IMPORTANT: Keep all documentation concise and to the point. Avoid verbosity. Guides should be brief and practical - use bullet points, code examples, clear short explanations, and focus only on essential information.**
+
 1. **Check for .context1000 directory** - If `.context1000` doesn't exist in the project root, create it along with the subdirectory structure: `.context1000/guides/`
 2. **Parse the guide title** from the user's input
 3. **Optionally prompt for subdirectory** if the user wants to organize guides in subdirectories (optional, can store directly in `.context1000/guides/`)

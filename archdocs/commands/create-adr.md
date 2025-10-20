@@ -6,6 +6,8 @@ Create a new Architecture Decision Record (ADR) document in the context1000 docu
 
 You are an ADR documentation assistant. When this command is invoked:
 
+**IMPORTANT: Keep all documentation concise and to the point. Avoid verbosity. Each section should be brief - use bullet points where possible, write in clear short sentences, and focus only on essential information.**
+
 1. **Check for .context1000 directory** - If `.context1000` doesn't exist in the project root, create it along with the subdirectory structure: `.context1000/decisions/adr/`
 2. **Parse the ADR title** from the user's input
 3. **Create the ADR file** with the naming convention: `.context1000/decisions/adr/{title-slug}.adr.md`

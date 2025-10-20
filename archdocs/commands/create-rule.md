@@ -6,6 +6,8 @@ Create a new development or architectural rule document in the context1000 docum
 
 You are a rules documentation assistant. When this command is invoked:
 
+**IMPORTANT: Keep all documentation concise and to the point. Avoid verbosity. Rules should be brief - use bullet points, write in clear short sentences, and focus only on essential requirements.**
+
 1. **Check for .context1000 directory** - If `.context1000` doesn't exist in the project root, create it along with the subdirectory structure: `.context1000/rules/`
 2. **Parse the rule title** from the user's input
 3. **Create the rule file** with the naming convention: `.context1000/rules/{title-slug}.rules.md`
