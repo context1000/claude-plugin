@@ -3,20 +3,24 @@
 /**
  * PreToolUse Hook: Enforce strict tool usage for context1000-architect agent
  *
- * Blocks:
- * - Write tool usage (architect must never create files directly)
- * - Edit tool usage (architect must never modify files directly)
- * - Bash tool usage for file/directory creation
+ * Purpose: Guide the architect agent to use slash commands for documentation
+ * creation instead of directly using Write/Edit/Bash tools.
+ *
+ * Blocks (only for architect agent):
+ * - Write tool usage on .context1000 paths (must use slash commands instead)
+ * - Edit tool usage on .context1000 paths (documentation-writer handles edits)
+ * - Bash commands that create files/directories in .context1000
  *
  * Allows:
+ * - All operations when inside a slash command execution
+ * - All operations from context1000-documentation-writer agent
  * - SlashCommand tool (required for document creation)
  * - Read, Grep, Glob (for analysis)
  *
  * Input: JSON via stdin (PreToolUse event format)
  * Output:
  *   - Exit code 0: Allow (success)
- *   - Exit code 2: Block (stderr message fed to Claude)
- *   - JSON to stdout for permission decisions
+ *   - JSON to stdout with permission decision (allow/deny)
  */
 
 const fs = require('fs');
@@ -31,13 +35,57 @@ process.stdin.on('end', () => {
   try {
     const input = JSON.parse(inputData);
 
+    // DEBUG: Log input structure for debugging
+    try {
+      fs.writeFileSync('/tmp/hook-debug.json', JSON.stringify(input, null, 2));
+    } catch (e) {
+      // Ignore write errors
+    }
+
     // Extract relevant fields
     const toolName = input.tool_name;
     const toolInput = input.tool_input || {};
 
-    // Determine if this is from context1000-architect
-    // Note: We need to check if the current context involves the architect agent
-    // For now, we'll apply rules based on tool patterns that architect shouldn't use
+    // Check if we're inside a slash command execution by examining:
+    // 1. Environment variables that might be set
+    // 2. Conversation state from input
+    // 3. Recent messages in conversation_messages array
+
+    const conversationMessages = input.conversation_messages || [];
+    const lastMessages = conversationMessages.slice(-10); // Check last 10 messages
+
+    // Check if we're inside a slash command execution
+    const isInsideSlashCommand = lastMessages.some(msg => {
+      if (!msg || !msg.content) return false;
+
+      const contentStr = Array.isArray(msg.content)
+        ? msg.content.map(c => typeof c === 'string' ? c : c.text || '').join(' ')
+        : String(msg.content);
+
+      return contentStr.includes('<command-message>') &&
+             contentStr.includes('/archdocs:create-');
+    });
+
+    // Check if we're inside the documentation-writer agent (not architect)
+    const isDocumentationWriter = lastMessages.some(msg => {
+      if (!msg || !msg.content) return false;
+
+      const contentStr = Array.isArray(msg.content)
+        ? msg.content.map(c => typeof c === 'string' ? c : c.text || '').join(' ')
+        : String(msg.content);
+
+      return contentStr.includes('context1000-documentation-writer') ||
+             contentStr.includes('Documentation Writer Agent');
+    });
+
+    // If inside slash command or documentation-writer agent, allow all operations
+    if (isInsideSlashCommand || isDocumentationWriter) {
+      allowTool();
+      return;
+    }
+
+    // Only block operations from the architect agent trying to directly modify files
+    // This allows slash commands and other agents to work normally
 
     // Check if this is Write tool
     if (toolName === 'Write') {
