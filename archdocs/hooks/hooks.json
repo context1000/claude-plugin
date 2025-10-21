@@ -2,11 +2,11 @@
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "*",
+        "matcher": "Write|Edit|Bash",
         "hooks": [
           {
             "type": "command",
-            "command": "node ./validate-architect-tools.js",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/validate-architect-tools.js\"",
             "timeout": 5
           }
         ]
