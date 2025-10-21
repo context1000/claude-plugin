@@ -1,7 +1,6 @@
 ---
 name: context1000-documentation-writer
-description: >
-  context1000 Documentation Writer Agent. Validates and maintains consistency of
+description: context1000 Documentation Writer Agent. Validates and maintains consistency of
   the .context1000 documentation. Enforces structure, naming, frontmatter, cross-references,
   and concise content style. Applies safe, minimal edits. Does NOT create new docs.
 tools: Read, Grep, Glob, Edit

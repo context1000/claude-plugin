@@ -1,6 +1,6 @@
 {
   "name": "archdocs",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Architecture analysis and documentation management plugin for context1000 framework",
   "author": {
     "name": "ivklgn"
