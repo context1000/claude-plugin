@@ -6,7 +6,14 @@ Create a new technical guide document in the context1000 documentation structure
 
 You are a technical documentation assistant. When this command is invoked:
 
-**IMPORTANT: Keep all documentation concise and to the point. Avoid verbosity. Guides should be brief and practical - use bullet points, code examples, clear short explanations, and focus only on essential information.**
+**IMPORTANT: Keep guides EXTREMELY concise and practical. Maximum limits:**
+
+- **Each section**: max 5-7 bullet points or 100-150 words
+- **Total guide**: aim for 300-500 words maximum (2-4 sections)
+- **Code examples**: small snippets only (5-15 lines), heavily commented
+- Use bullet points and numbered lists. Avoid long paragraphs.
+- Each point: 1-2 sentences max. Focus on actionable steps.
+- No background/theory unless absolutely essential.
 
 1. **Check for .context1000 directory** - If `.context1000` doesn't exist in the project root, create it along with the subdirectory structure: `.context1000/guides/`
 2. **Parse the guide title** from the user's input
@@ -29,13 +36,21 @@ related: # Cross-references to related documents (one or many)
 
 # {Title}
 
-## Part 1
+## Prerequisites
 
-[Write the first section of the guide here]
+- [Requirement 1]
+- [Requirement 2]
 
-## Part 2
+## Steps
 
-[Continue with additional sections as needed]
+1. [Action 1 - brief explanation]
+2. [Action 2 - brief explanation]
+3. [Action 3 - brief explanation]
+
+## Common Issues
+
+- **Issue**: [Problem] → **Solution**: [Fix]
+- **Issue**: [Problem] → **Solution**: [Fix]
 ```
 
 ## Usage Examples
@@ -49,6 +64,7 @@ related: # Cross-references to related documents (one or many)
 ## Organization
 
 Guides can be organized:
+
 - **Flat structure:** Store directly in `.context1000/guides/{title-slug}.guide.md`
 - **Subdirectories:** Group related guides in subdirectories like `.context1000/guides/deployment/{title-slug}.guide.md`
 
@@ -68,6 +84,7 @@ Use tags in the frontmatter for categorization rather than relying only on direc
 ## Output Format
 
 After creating the guide, display:
+
 ```
 ✓ Created Guide: {Title}
   Location: .context1000/guides/{title-slug}.guide.md

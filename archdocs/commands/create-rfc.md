@@ -6,7 +6,18 @@ Create a new Request for Comments (RFC) document in the context1000 documentatio
 
 You are an RFC documentation assistant. When this command is invoked:
 
-**IMPORTANT: Keep all documentation concise and to the point. Avoid verbosity. Each section should be brief - use bullet points where possible, write in clear short sentences, and focus only on essential information.**
+**IMPORTANT: Keep all documentation EXTREMELY concise. Maximum limits:**
+
+- **Summary**: 2-3 sentences max (50 words)
+- **Context and problem**: 3-5 bullet points (75 words)
+- **Proposed solution**: 3-5 bullet points (100 words)
+- **Alternatives**: 2-3 options, one sentence each (50 words)
+- **Impact**: 3-5 bullet points (75 words)
+- **Implementation plan**: 3-4 milestones, one sentence each (50 words)
+- **Success metrics**: 2-3 metrics (25 words)
+- **Risks**: 3-5 items (50 words)
+- **Total document**: aim for 400-500 words maximum
+- Pure signal, no filler.
 
 1. **Check for .context1000 directory** - If `.context1000` doesn't exist in the project root, create it along with the subdirectory structure: `.context1000/decisions/rfc/`
 2. **Parse the RFC title** from the user's input
@@ -29,39 +40,47 @@ related: # Cross-references to related documents (one or many)
 
 ## Summary
 
-Who needs it and what changes in one paragraph.
+[2-3 sentences: who needs this, what changes, why now.]
 
 ## Context and problem
 
-Current behavior/limitations, scope of impact.
+- [Current limitation 1]
+- [Current limitation 2]
+- [Impact scope]
 
 ## Proposed solution
 
-- Architectural idea (1-3 bullet points).
-- API/contracts (brief, code block if necessary).
-- Data/schema/migrations (one-two sentences).
+- [Core idea in 1 sentence]
+- [Key technical detail 1]
+- [Key technical detail 2]
 
 ## Alternatives
 
-Why not X and Y (one sentence per alternative).
+- **Option A**: [Why not]
+- **Option B**: [Why not]
 
 ## Impact
 
-- Performance/cost
-- Compatibility/migrations
-- Security/privacy
+- **Performance**: [Brief note]
+- **Compatibility**: [Brief note]
+- **Security**: [Brief note if relevant]
 
 ## Implementation plan
 
-Milestones with estimates: M1, M2, M3. Rollback plan in one sentence.
+- **M1**: [Milestone 1 - estimate]
+- **M2**: [Milestone 2 - estimate]
+- **M3**: [Milestone 3 - estimate]
+- **Rollback**: [One sentence]
 
 ## Success metrics
 
-How we will understand what worked (numbers/threshold/date).
+- [Metric 1: threshold/date]
+- [Metric 2: threshold/date]
 
 ## Risks and open questions
 
-A short list
+- [Risk/question 1]
+- [Risk/question 2]
 ```
 
 ## Usage Examples
@@ -83,6 +102,7 @@ A short list
 ## Output Format
 
 After creating the RFC, display:
+
 ```
 ✓ Created RFC: {Title}
   Location: .context1000/decisions/rfc/{title-slug}.rfc.md

@@ -6,7 +6,14 @@ Create a new development or architectural rule document in the context1000 docum
 
 You are a rules documentation assistant. When this command is invoked:
 
-**IMPORTANT: Keep all documentation concise and to the point. Avoid verbosity. Rules should be brief - use bullet points, write in clear short sentences, and focus only on essential requirements.**
+**IMPORTANT: Keep rules EXTREMELY brief and actionable. Maximum limits:**
+
+- **Rule statement**: 1-2 sentences (25 words)
+- **Requirements list**: 3-7 numbered items max
+- **Each requirement**: 1 sentence, clear and specific
+- **Total document**: aim for 100-200 words maximum
+- No explanations or justifications - just requirements.
+- If context needed, reference related ADR/RFC instead.
 
 1. **Check for .context1000 directory** - If `.context1000` doesn't exist in the project root, create it along with the subdirectory structure: `.context1000/rules/`
 2. **Parse the rule title** from the user's input
@@ -28,13 +35,15 @@ related: # Cross-references to related documents (one or many)
 
 # {Title}
 
-[Write the rule content here. Keep it concise and actionable.]
+[One sentence stating the rule and its purpose.]
 
-For all new projects and when updating existing ones:
+**Requirements:**
 
-1. [First requirement or guideline]
-2. [Second requirement or guideline]
-3. [Third requirement or guideline]
+1. [Specific requirement 1]
+2. [Specific requirement 2]
+3. [Specific requirement 3]
+
+**Applies to**: [Scope: new projects / existing code / both]
 ```
 
 ## Usage Examples
@@ -48,6 +57,7 @@ For all new projects and when updating existing ones:
 ## Tags
 
 Common rule tags (use in frontmatter):
+
 - **security** - Security-related rules and requirements
 - **performance** - Performance and optimization rules
 - **code-quality** - Code style, structure, and maintainability
@@ -68,6 +78,7 @@ Common rule tags (use in frontmatter):
 ## Output Format
 
 After creating the rule, display:
+
 ```
 ✓ Created Rule: {Title}
   Location: .context1000/rules/{title-slug}.rules.md

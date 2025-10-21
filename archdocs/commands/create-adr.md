@@ -6,7 +6,14 @@ Create a new Architecture Decision Record (ADR) document in the context1000 docu
 
 You are an ADR documentation assistant. When this command is invoked:
 
-**IMPORTANT: Keep all documentation concise and to the point. Avoid verbosity. Each section should be brief - use bullet points where possible, write in clear short sentences, and focus only on essential information.**
+**IMPORTANT: Keep all documentation EXTREMELY concise. Maximum limits:**
+
+- **Context section**: max 3-5 bullet points or 100 words
+- **Decision section**: max 3-5 bullet points or 100 words
+- **Consequences section**: max 5-7 bullet points (2-3 positive, 2-3 negative, 1-2 risks)
+- **Total document**: aim for 200-300 words maximum
+- Use bullet points, not paragraphs. Each bullet: 1-2 short sentences max.
+- No filler words, no verbose explanations. Pure signal.
 
 1. **Check for .context1000 directory** - If `.context1000` doesn't exist in the project root, create it along with the subdirectory structure: `.context1000/decisions/adr/`
 2. **Parse the ADR title** from the user's input
@@ -31,15 +38,28 @@ related: # Cross-references to related documents (one or many)
 
 ## Context
 
-What is the issue that we're seeing that is motivating this decision or change?
+- [Bullet 1: Current situation/problem]
+- [Bullet 2: Why this matters]
+- [Bullet 3: Key constraint or requirement]
 
 ## Decision
 
-What is the change that we're proposing and/or doing?
+- [Bullet 1: What we decided]
+- [Bullet 2: Key technical approach]
+- [Bullet 3: Implementation note]
 
 ## Consequences
 
-What becomes easier or more difficult to do because of this change?
+**Positive:**
+- [Benefit 1]
+- [Benefit 2]
+
+**Negative:**
+- [Trade-off 1]
+- [Trade-off 2]
+
+**Risks:**
+- [Risk 1]
 ```
 
 ## Usage Examples
@@ -62,6 +82,7 @@ What becomes easier or more difficult to do because of this change?
 ## Status Values
 
 ADRs use these status values:
+
 - **draft:** Under discussion or being written
 - **accepted:** Decision has been made and approved
 - **rejected:** Decision was considered but not accepted
@@ -69,6 +90,7 @@ ADRs use these status values:
 ## Output Format
 
 After creating the ADR, display:
+
 ```
 ✓ Created ADR: {Title}
   Location: .context1000/decisions/adr/{title-slug}.adr.md
