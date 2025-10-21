@@ -4,7 +4,13 @@ Create a new technical guide document in the context1000 documentation structure
 
 ## Instructions
 
-You are a technical documentation assistant. When this command is invoked:
+When this slash command is invoked, Claude should:
+
+1. **Parse the guide title** from the conversation context (user's most recent message or command invocation)
+2. **Create the directory structure** if it doesn't exist: `.context1000/guides/`
+3. **Generate slug**: Convert title to lowercase-kebab-case (e.g., "Working with InstantDB" → "working-with-instantdb")
+4. **Create the guide file** at `.context1000/guides/{slug}.guide.md` with proper frontmatter and template
+5. **Report success** with the file path
 
 **IMPORTANT: Keep guides EXTREMELY concise and practical. Maximum limits:**
 
@@ -15,11 +21,9 @@ You are a technical documentation assistant. When this command is invoked:
 - Each point: 1-2 sentences max. Focus on actionable steps.
 - No background/theory unless absolutely essential.
 
-1. **Check for .context1000 directory** - If `.context1000` doesn't exist in the project root, create it along with the subdirectory structure: `.context1000/guides/`
-2. **Parse the guide title** from the user's input
-3. **Optionally prompt for subdirectory** if the user wants to organize guides in subdirectories (optional, can store directly in `.context1000/guides/`)
-4. **Create the guide file** with the naming convention: `.context1000/guides/{title-slug}.guide.md` or `.context1000/guides/{subdirectory}/{title-slug}.guide.md`
-5. **Populate the guide template** with the following structure:
+## File Template
+
+Create the guide file at `.context1000/guides/{slug}.guide.md` with this structure:
 
 ```markdown
 ---
@@ -70,16 +74,18 @@ Guides can be organized:
 
 Use tags in the frontmatter for categorization rather than relying only on directory structure.
 
-## Behavior
+## Implementation Steps
 
-1. Check if `.context1000` directory exists in the project root, create if needed
-2. Check if `.context1000/guides/` directory exists, create the full path if needed
-3. Check if subdirectory was specified (optional)
-4. Create subdirectory under `.context1000/guides/` if specified and doesn't exist
-5. Convert the title to a URL-friendly slug (lowercase, hyphens) for the `name` field
-6. Create the file with naming format: `{title-slug}.guide.md` in `.context1000/guides/` or `.context1000/guides/{subdirectory}/`
-7. Populate the YAML frontmatter with name, title, and empty arrays for tags and related documents
-8. Confirm creation and provide the file path to the user
+Follow these steps to create the guide:
+
+1. **Ensure directory exists**: Use `Bash(mkdir -p .context1000/guides)`
+2. **Convert title to slug**: "Working with InstantDB" → "working-with-instantdb"
+3. **Create file**: Use `Write` tool with path `.context1000/guides/{slug}.guide.md`
+4. **Populate content**: Include frontmatter (name, title, tags, related) and template sections
+5. **Verify**: Use `Read` tool to confirm file was created correctly
+6. **Report**: Display success message with file path
+
+**Note**: If subdirectory is mentioned (e.g., "deployment/..."), create nested path `.context1000/guides/{subdir}/{slug}.guide.md`
 
 ## Output Format
 

@@ -176,4 +176,5 @@ User: "Create guide for InstantDB"
 ❌ WRONG:
 1. Use Bash: mkdir -p .context1000/guides
 2. Use Write: .context1000/guides/instantdb.guide.md
+3. Bypass slash commands
 ```

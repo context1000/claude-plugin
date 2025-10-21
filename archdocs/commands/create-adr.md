@@ -4,7 +4,13 @@ Create a new Architecture Decision Record (ADR) document in the context1000 docu
 
 ## Instructions
 
-You are an ADR documentation assistant. When this command is invoked:
+When this slash command is invoked, Claude should:
+
+1. **Parse the ADR title** from the conversation context
+2. **Create the directory structure** if it doesn't exist: `.context1000/decisions/adr/`
+3. **Generate slug**: Convert title to lowercase-kebab-case
+4. **Create the ADR file** at `.context1000/decisions/adr/{slug}.adr.md` with proper frontmatter and template
+5. **Report success** with the file path
 
 **IMPORTANT: Keep all documentation EXTREMELY concise. Maximum limits:**
 
@@ -15,10 +21,9 @@ You are an ADR documentation assistant. When this command is invoked:
 - Use bullet points, not paragraphs. Each bullet: 1-2 short sentences max.
 - No filler words, no verbose explanations. Pure signal.
 
-1. **Check for .context1000 directory** - If `.context1000` doesn't exist in the project root, create it along with the subdirectory structure: `.context1000/decisions/adr/`
-2. **Parse the ADR title** from the user's input
-3. **Create the ADR file** with the naming convention: `.context1000/decisions/adr/{title-slug}.adr.md`
-4. **Populate the ADR template** with the following structure:
+## File Template
+
+Create the ADR file at `.context1000/decisions/adr/{slug}.adr.md` with this structure:
 
 ```markdown
 ---
@@ -70,14 +75,16 @@ related: # Cross-references to related documents (one or many)
 /create-adr Select frontend framework
 ```
 
-## Behavior
+## Implementation Steps
 
-1. Check if `.context1000` directory exists in the project root, create if needed
-2. Check if `.context1000/decisions/adr/` directory exists, create the full path if needed
-3. Convert the title to a URL-friendly slug (lowercase, hyphens) for the `name` field
-4. Create the file with naming format: `{title-slug}.adr.md` in `.context1000/decisions/adr/`
-5. Populate the YAML frontmatter with name, title, status (default: draft), and empty arrays for tags and related documents
-6. Confirm creation and provide the file path to the user
+Follow these steps to create the ADR:
+
+1. **Ensure directory exists**: Use `Bash(mkdir -p .context1000/decisions/adr)`
+2. **Convert title to slug**: "Choose Database Technology" → "choose-database-technology"
+3. **Create file**: Use `Write` tool with path `.context1000/decisions/adr/{slug}.adr.md`
+4. **Populate content**: Include frontmatter (name, title, status: draft, tags, related) and template sections
+5. **Verify**: Use `Read` tool to confirm file was created correctly
+6. **Report**: Display success message with file path
 
 ## Status Values
 

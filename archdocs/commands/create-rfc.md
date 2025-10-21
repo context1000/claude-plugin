@@ -4,7 +4,13 @@ Create a new Request for Comments (RFC) document in the context1000 documentatio
 
 ## Instructions
 
-You are an RFC documentation assistant. When this command is invoked:
+When this slash command is invoked, Claude should:
+
+1. **Parse the RFC title** from the conversation context
+2. **Create the directory structure** if it doesn't exist: `.context1000/decisions/rfc/`
+3. **Generate slug**: Convert title to lowercase-kebab-case
+4. **Create the RFC file** at `.context1000/decisions/rfc/{slug}.rfc.md` with proper frontmatter and template
+5. **Report success** with the file path
 
 **IMPORTANT: Keep all documentation EXTREMELY concise. Maximum limits:**
 
@@ -19,10 +25,9 @@ You are an RFC documentation assistant. When this command is invoked:
 - **Total document**: aim for 400-500 words maximum
 - Pure signal, no filler.
 
-1. **Check for .context1000 directory** - If `.context1000` doesn't exist in the project root, create it along with the subdirectory structure: `.context1000/decisions/rfc/`
-2. **Parse the RFC title** from the user's input
-3. **Create the RFC file** with the naming convention: `.context1000/decisions/rfc/{title-slug}.rfc.md`
-4. **Populate the RFC template** with the following structure:
+## File Template
+
+Create the RFC file at `.context1000/decisions/rfc/{slug}.rfc.md` with this structure:
 
 ```markdown
 ---
@@ -90,14 +95,16 @@ related: # Cross-references to related documents (one or many)
 /create-rfc Add support for multi-tenancy
 ```
 
-## Behavior
+## Implementation Steps
 
-1. Check if `.context1000` directory exists in the project root, create if needed
-2. Check if `.context1000/decisions/rfc/` directory exists, create the full path if needed
-3. Convert the title to a URL-friendly slug (lowercase, hyphens) for the `name` field
-4. Create the file with naming format: `{title-slug}.rfc.md` in `.context1000/decisions/rfc/`
-5. Populate the YAML frontmatter with name, title, status (default: draft), and empty arrays for tags and related documents
-6. Confirm creation and provide the file path to the user
+Follow these steps to create the RFC:
+
+1. **Ensure directory exists**: Use `Bash(mkdir -p .context1000/decisions/rfc)`
+2. **Convert title to slug**: "Add Multi-Tenancy Support" → "add-multi-tenancy-support"
+3. **Create file**: Use `Write` tool with path `.context1000/decisions/rfc/{slug}.rfc.md`
+4. **Populate content**: Include frontmatter (name, title, status: draft, tags, related) and template sections
+5. **Verify**: Use `Read` tool to confirm file was created correctly
+6. **Report**: Display success message with file path
 
 ## Output Format
 

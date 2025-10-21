@@ -4,7 +4,13 @@ Create a new development or architectural rule document in the context1000 docum
 
 ## Instructions
 
-You are a rules documentation assistant. When this command is invoked:
+When this slash command is invoked, Claude should:
+
+1. **Parse the rule title** from the conversation context
+2. **Create the directory structure** if it doesn't exist: `.context1000/rules/`
+3. **Generate slug**: Convert title to lowercase-kebab-case
+4. **Create the rule file** at `.context1000/rules/{slug}.rules.md` with proper frontmatter and template
+5. **Report success** with the file path
 
 **IMPORTANT: Keep rules EXTREMELY brief and actionable. Maximum limits:**
 
@@ -15,10 +21,9 @@ You are a rules documentation assistant. When this command is invoked:
 - No explanations or justifications - just requirements.
 - If context needed, reference related ADR/RFC instead.
 
-1. **Check for .context1000 directory** - If `.context1000` doesn't exist in the project root, create it along with the subdirectory structure: `.context1000/rules/`
-2. **Parse the rule title** from the user's input
-3. **Create the rule file** with the naming convention: `.context1000/rules/{title-slug}.rules.md`
-4. **Populate the rule template** with the following structure:
+## File Template
+
+Create the rule file at `.context1000/rules/{slug}.rules.md` with this structure:
 
 ```markdown
 ---
@@ -66,14 +71,16 @@ Common rule tags (use in frontmatter):
 - **deployment** - Deployment and release rules
 - **documentation** - Documentation requirements
 
-## Behavior
+## Implementation Steps
 
-1. Check if `.context1000` directory exists in the project root, create if needed
-2. Check if `.context1000/rules/` directory exists, create the full path if needed
-3. Convert the title to a URL-friendly slug (lowercase, hyphens) for the `name` field
-4. Create the file with naming format: `{title-slug}.rules.md` in `.context1000/rules/`
-5. Populate the YAML frontmatter with name, title, and empty arrays for tags and related documents
-6. Confirm creation and provide the file path to the user
+Follow these steps to create the rule:
+
+1. **Ensure directory exists**: Use `Bash(mkdir -p .context1000/rules)`
+2. **Convert title to slug**: "All APIs Must Use Authentication" → "all-apis-must-use-authentication"
+3. **Create file**: Use `Write` tool with path `.context1000/rules/{slug}.rules.md`
+4. **Populate content**: Include frontmatter (name, title, tags, related) and template sections
+5. **Verify**: Use `Read` tool to confirm file was created correctly
+6. **Report**: Display success message with file path
 
 ## Output Format
 
