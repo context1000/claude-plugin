@@ -35,48 +35,60 @@ process.stdin.on('end', () => {
   try {
     const input = JSON.parse(inputData);
 
-    // DEBUG: Log input structure for debugging
-    try {
-      fs.writeFileSync('/tmp/hook-debug.json', JSON.stringify(input, null, 2));
-    } catch (e) {
-      // Ignore write errors
-    }
+    // DEBUG: Uncomment to log input structure for debugging
+    // try {
+    //   fs.writeFileSync('/tmp/hook-debug.json', JSON.stringify(input, null, 2));
+    // } catch (e) {
+    //   // Ignore write errors
+    // }
 
     // Extract relevant fields
     const toolName = input.tool_name;
     const toolInput = input.tool_input || {};
+    const transcriptPath = input.transcript_path;
 
-    // Check if we're inside a slash command execution by examining:
-    // 1. Environment variables that might be set
-    // 2. Conversation state from input
-    // 3. Recent messages in conversation_messages array
+    // Check if we're inside a slash command execution or documentation-writer agent
+    // by reading the last few lines of the transcript
+    let isInsideSlashCommand = false;
+    let isDocumentationWriter = false;
 
-    const conversationMessages = input.conversation_messages || [];
-    const lastMessages = conversationMessages.slice(-10); // Check last 10 messages
+    if (transcriptPath && fs.existsSync(transcriptPath)) {
+      try {
+        // Read the last 50KB of the transcript to check recent context
+        const stats = fs.statSync(transcriptPath);
+        const readSize = Math.min(50000, stats.size);
+        const buffer = Buffer.alloc(readSize);
+        const fd = fs.openSync(transcriptPath, 'r');
+        fs.readSync(fd, buffer, 0, readSize, Math.max(0, stats.size - readSize));
+        fs.closeSync(fd);
 
-    // Check if we're inside a slash command execution
-    const isInsideSlashCommand = lastMessages.some(msg => {
-      if (!msg || !msg.content) return false;
+        const recentTranscript = buffer.toString('utf-8');
 
-      const contentStr = Array.isArray(msg.content)
-        ? msg.content.map(c => typeof c === 'string' ? c : c.text || '').join(' ')
-        : String(msg.content);
+        // Split into lines (JSONL format) and get the last 20 entries
+        const lines = recentTranscript.split('\n').filter(l => l.trim());
+        const recentLines = lines.slice(-20);
 
-      return contentStr.includes('<command-message>') &&
-             contentStr.includes('/archdocs:create-');
-    });
+        // Check for slash command execution in recent lines
+        const recentContext = recentLines.join('\n');
+        isInsideSlashCommand =
+          recentContext.includes('"type":"command_message"') ||
+          recentContext.includes('/archdocs:create-guide') ||
+          recentContext.includes('/archdocs:create-adr') ||
+          recentContext.includes('/archdocs:create-rfc') ||
+          recentContext.includes('/archdocs:create-rule');
 
-    // Check if we're inside the documentation-writer agent (not architect)
-    const isDocumentationWriter = lastMessages.some(msg => {
-      if (!msg || !msg.content) return false;
+        // Check for documentation-writer agent in recent lines
+        isDocumentationWriter =
+          recentContext.includes('context1000-documentation-writer') ||
+          recentContext.includes('Documentation Writer Agent');
 
-      const contentStr = Array.isArray(msg.content)
-        ? msg.content.map(c => typeof c === 'string' ? c : c.text || '').join(' ')
-        : String(msg.content);
-
-      return contentStr.includes('context1000-documentation-writer') ||
-             contentStr.includes('Documentation Writer Agent');
-    });
+      } catch (e) {
+        // If we can't read transcript, fail open (allow the operation)
+        // to avoid breaking the workflow
+        allowTool();
+        return;
+      }
+    }
 
     // If inside slash command or documentation-writer agent, allow all operations
     if (isInsideSlashCommand || isDocumentationWriter) {
