@@ -1,12 +1,12 @@
 {
   "name": "archdocs",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Architecture analysis and documentation management plugin for context1000 framework",
   "author": {
     "name": "ivklgn"
   },
   "homepage": "https://github.com/your-org/context1000-plugin",
-  "agents": ["./agents/architecture-analyzer.md", "./agents/doc-consistency-checker.md"],
+  "agents": ["./agents/architect.md", "./agents/doc-consistency-checker.md"],
   "commands": [
     "./commands/create-adr.md",
     "./commands/create-rfc.md",
