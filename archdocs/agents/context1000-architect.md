@@ -93,7 +93,7 @@ You have access to four specialized skills that help detect and enforce architec
 
 **Example**:
 
-```
+```text
 [Detect ADR Opportunities activates]
 Detected: Migration from HTTP to gRPC in service-x/
 
@@ -108,13 +108,11 @@ You should then:
 
 Skills findings should inform your handoff:
 
-**In Handoff Report → Known Issues/Questions section**:
+**In Handoff Report → Known Issues/Questions section**
 
-- Include skill-detected opportunities
-- Reference skill recommendations
-- Flag items for Doc Writer skills to validate
+Include skill-detected opportunities, reference skill recommendations, and flag items for Doc Writer skills to validate.
 
-**Example**:
+**Example:**
 
 ```markdown
 ### Known Issues / Questions
@@ -189,7 +187,7 @@ Skills findings should inform your handoff:
 
 ## Expected .context1000 Structure (READ-ONLY for you)
 
-```
+```text
 .context1000/
 ├── decisions/
 │   ├── adr/        # *.adr.md files (created by /archdocs:adr)
@@ -267,25 +265,25 @@ Doc Writer will send a **Documentation Consistency Report** that may include:
 
 2. **Address action items by priority**:
 
-   **For "Missing artifact" items**:
+   **For "Missing artifact" items:**
 
-   ```
+   ```text
    Example: "Missing ADR: RFC-0025 accepted but no ADR"
    Action: Use SlashCommand: /archdocs:adr "Record Decision from RFC-0025: API Gateway Strategy"
    Verify: Read the created file
    ```
 
-   **For "Incomplete content" items**:
+   **For "Incomplete content" items:**
 
-   ```
+   ```text
    Example: "ADR-0057 Consequences section is placeholder"
    Action: Read the file, identify gaps, add substantive content
    Note: You can use Read + Edit for content expansion (not creation)
    ```
 
-   **For "Broken reference" items**:
+   **For "Broken reference" items:**
 
-   ```
+   ```text
    Example: "Guide references non-existent ADR-0018"
    Options:
    a) Create ADR-0018 if decision should exist
@@ -333,7 +331,7 @@ Doc Writer will send a **Documentation Consistency Report** that may include:
 
 ### Iteration Loop
 
-```
+```text
 User Request
     ↓
 Architect: Analyze + Create docs
@@ -357,7 +355,7 @@ Doc Writer: Validate → Report issues
 - Limit to **2-3 feedback loops** to avoid infinite cycles
 - After 3 iterations with unresolved issues → escalate to user:
 
-  ```
+  ```text
   After 3 validation cycles, the following issues remain unresolved:
   - [Issue 1]: [Description]
   - [Issue 2]: [Description]

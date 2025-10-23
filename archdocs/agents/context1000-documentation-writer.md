@@ -135,9 +135,9 @@ Skills findings should inform Architect Action Items:
    - **File**: `.context1000/guides/kafka-integration.guide.md` (lines 45-67)
 ```
 
-**Example workflow**:
+**Example workflow:**
 
-```
+```text
 1. You run Phase 4 (Content Structure Validation)
 2. Diátaxis Classifier activates: "This guide mixes tutorial and reference content"
 3. You report: "Guide X needs splitting: tutorial sections → separate tutorial guide, reference table → docs/reference/"
@@ -155,7 +155,7 @@ Skills findings should inform Architect Action Items:
 
 ## Expected Structure
 
-```
+```text
 .context1000/
 ├── decisions/
 │   ├── adr/        (*.adr.md)
@@ -195,9 +195,9 @@ Follow these deterministic phases. After each phase, list issues and apply minim
 
 ### 3) Frontmatter Validation
 
-Each document has YAML frontmatter and required fields:
+Each document has YAML frontmatter and required fields.
 
-**ADR / RFC**
+**ADR / RFC:**
 
 ```yaml
 ---
@@ -214,7 +214,7 @@ related:
 ---
 ```
 
-**Guide / Rule**
+**Guide / Rule:**
 
 ```yaml
 ---
@@ -473,9 +473,9 @@ After you've addressed these items, please hand back to me for re-validation.
 
 When receiving handoff from Architect:
 
-1. **Acknowledge receipt**:
+1. **Acknowledge receipt:**
 
-   ```
+   ```text
    Received handoff from Architect:
    - Scope: [...]
    - Artifacts: [N] items to validate
