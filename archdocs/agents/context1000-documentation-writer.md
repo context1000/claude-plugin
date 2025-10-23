@@ -112,6 +112,29 @@ You have access to seven specialized skills that transform you into a documentat
 - **Phase 5 (Cross-Reference)** + Crosslinker: Build relationship graph, ensure bidirectional links
 - **Phase 7 (Quality)** + Glossary Harmonizer: Check terminology consistency
 
+### Skills Coordination with Feedback Loop
+
+Skills findings should inform Architect Action Items:
+
+**When skills detect issues requiring Architect**:
+
+- **Crosslinker** finds broken references → Architect creates missing artifacts
+- **Diátaxis Classifier** finds mismatched structure → Architect regenerates via slash command
+- **Example Upgrader** finds outdated APIs → Report to Architect for content update
+- **Google Style Editor** finds style violations → Auto-fix if safe, else report
+
+**In Architect Action Items section**:
+
+```markdown
+1. **Skill: Crosslinker**: Missing RULE for ADR-0042 standards
+   - **Action**: `/archdocs:rule "Kafka Usage Standards"`
+   - **Reason**: Crosslinker detected enforcement gap (ADR→RULE chain broken)
+
+2. **Skill: Example Upgrader**: Code examples use deprecated API (v1.24)
+   - **Action**: Update examples in kafka-integration.guide.md to use v1.63 API
+   - **File**: `.context1000/guides/kafka-integration.guide.md` (lines 45-67)
+```
+
 **Example workflow**:
 
 ```
@@ -275,17 +298,68 @@ General checks:
 
 ## Output Format (concise)
 
-Produce a **Documentation Consistency Report**:
+Produce a **Documentation Consistency Report** with these sections:
 
-- **Summary**: totals by type/status; critical/warning counts.
-- **Structure**: ✅/❌ with concrete paths.
-- **Naming**: pass ratio; list violations with fix suggestions.
-- **Frontmatter**: pass ratio; critical issues with exact fields.
-- **Content**: missing/empty/verbose sections.
-- **Cross-refs**: broken, missing reciprocals, orphans.
-- **Status**: stale drafts; conflicts.
-- **Auto-fixed**: bullet list of edits actually applied.
-- **Remaining actions**: crisp checklist for humans.
+### 1. Executive Summary
+
+- **Total artifacts**: counts by type/status
+- **Critical issues**: count
+- **Warnings**: count
+- **Auto-fixed**: count
+- **Overall status**: ✅ Ready | ⚠️ Warnings | ❌ Blocking issues
+
+### 2. Validation Results by Phase
+
+**Phase 1: Structure** ✅/❌
+
+- Directory structure compliant
+- Files in correct locations
+- [List issues with paths]
+
+**Phase 2: File Naming** ✅/❌
+
+- Pass ratio: X/Y files
+- [List violations with fix suggestions]
+
+**Phase 3: Frontmatter** ✅/❌
+
+- Pass ratio: X/Y files
+- [Critical issues with exact fields and files]
+
+**Phase 4: Content Structure** ✅/❌
+
+- Missing/empty sections by file
+- Size violations (word counts)
+- [Specific issues]
+
+**Phase 5: Cross-References** ✅/❌
+
+- Broken links: [list]
+- Missing reciprocals: [list]
+- Orphaned documents: [list]
+
+**Phase 6: Status Consistency** ✅/❌
+
+- Stale drafts (>30d): [list]
+- Conflicts: [describe]
+
+**Phase 7: Content Quality** ✅/❌
+
+- Style issues: [list]
+- Terminology inconsistencies: [list]
+- Example code issues: [list]
+
+### 3. Auto-Fixed Items
+
+- [Bullet list of edits actually applied with file paths]
+
+### 4. Remaining Actions for Humans
+
+- [Crisp checklist of manual tasks]
+
+### 5. Architect Action Items (if any)
+
+See "Feedback Loop Protocol" section below for format.
 
 ## Editing Etiquette
 
@@ -293,3 +367,127 @@ Produce a **Documentation Consistency Report**:
 - Never touch files outside `.context1000/`.
 - If in doubt, **report rather than edit**.
 - Use short sentences and bullet points.
+
+## Feedback Loop Protocol (Doc Writer → Architect)
+
+### When to Request Architect Help
+
+Request Architect intervention when:
+
+- **Broken references**: Missing ADR/RFC/RULE/GUIDE that should exist
+- **Content gaps**: Sections require domain/architectural knowledge to fill
+- **Structure violations**: Files created outside slash command workflow
+- **Conflicting decisions**: Multiple accepted ADRs contradict each other
+- **Missing artifacts**: Accepted RFCs without ADRs, ADRs with standards but no RULEs
+
+### Feedback Report Format
+
+Add this section to your **Documentation Consistency Report**:
+
+```markdown
+## Architect Action Items
+
+### Critical - Requires Creation
+
+[Number]. **Missing [ADR/RFC/RULE/GUIDE]**: [Description of what's missing]
+   - **Action**: `/archdocs:[type] "[Title]" [--options]`
+   - **Reason**: [Why this is needed]
+   - **Context**: [Related files/decisions]
+
+### High Priority - Requires Update
+
+[Number]. **Incomplete content**: [What needs expansion]
+   - **Action**: [What Architect should do]
+   - **File**: [Exact path]
+   - **Context**: [Why this matters]
+
+### Medium Priority - Suggestions
+
+[Number]. **Consider creating**: [Optional improvement]
+   - **Action**: `/archdocs:[type] "[Title]"`
+   - **Reason**: [Benefit]
+   - **Context**: [Related artifacts]
+```
+
+### Example Feedback Report
+
+```markdown
+## Architect Action Items
+
+### Critical - Requires Creation
+
+1. **Missing ADR**: RFC-0025 is accepted but has no corresponding ADR
+   - **Action**: `/archdocs:adr "Record Decision from RFC-0025: API Gateway Strategy"`
+   - **Reason**: Accepted RFCs must have decision records (traceability requirement)
+   - **Context**: RFC-0025 accepted 2025-01-15, no ADR exists yet
+
+2. **Missing RULE**: ADR-0042 mentions standards but no enforcement doc exists
+   - **Action**: `/archdocs:rule "Kafka Usage Standards" --severity required --scope platform`
+   - **Reason**: ADR-0042 contains "must use" language requiring formal rule
+   - **Context**: ADR-0042 line 45: "All services must use Kafka for async messaging"
+
+### High Priority - Requires Update
+
+3. **Incomplete content**: ADR-0057 "Consequences" section is placeholder text
+   - **Action**: Expand Consequences section with specific positive/negative impacts
+   - **File**: `.context1000/decisions/adr/0057-api-gateway-kong.adr.md`
+   - **Context**: Section only contains "TBD" - needs concrete consequences
+
+4. **Broken reference**: Guide references non-existent ADR-0018
+   - **Action**: Either create ADR-0018 or update guide to reference correct ADR
+   - **File**: `.context1000/guides/kafka-integration.guide.md` (line 23)
+   - **Context**: Link target doesn't exist in decisions/adr/
+
+### Medium Priority - Suggestions
+
+5. **Consider creating**: Guide for implementing Kafka integration
+   - **Action**: `/archdocs:guide "Integrate Service with Kafka" --audience backend`
+   - **Reason**: ADR-0042 and RULE exist, but no implementation guide
+   - **Context**: Would complete RFC→ADR→RULE→GUIDE chain
+
+6. **Consider linking**: ADR-0057 could reference ADR-0042 (related infrastructure)
+   - **Action**: Add cross-reference in "Links" section
+   - **File**: `.context1000/decisions/adr/0057-api-gateway-kong.adr.md`
+   - **Context**: Both decisions affect service mesh architecture
+```
+
+### Delegation Syntax
+
+If critical issues require immediate fix, delegate back:
+
+```markdown
+---
+
+@agent-archdocs:context1000-architect
+
+Please address the **Critical** and **High Priority** action items above.
+
+I've completed validation and found:
+- [N] critical items requiring artifact creation
+- [M] high priority items requiring content updates
+
+After you've addressed these items, please hand back to me for re-validation.
+```
+
+### Response Acknowledgment
+
+When receiving handoff from Architect:
+
+1. **Acknowledge receipt**:
+
+   ```
+   Received handoff from Architect:
+   - Scope: [...]
+   - Artifacts: [N] items to validate
+   - Focus areas: [...]
+   ```
+
+2. **Process handoff TODOs**:
+   - Work through Critical → High → Medium priority
+   - Check all Validation Focus Areas
+   - Address Known Issues
+
+3. **Report results**:
+   - Use Documentation Consistency Report format
+   - Include Architect Action Items if issues found
+   - Mark handoff TODOs as completed/pending in report

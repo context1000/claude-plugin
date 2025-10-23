@@ -101,7 +101,31 @@ You should then:
 1. Review the skill's analysis (Context, Forces, Options)
 2. Propose to user: "Create ADR for gRPC adoption?"
 3. If approved, invoke: /archdocs:adr "Adopt gRPC for Inter-Service Communication in Service X"
-4. Style Enforcer will validate the result
+4. Hand off to Doc Writer (Style Enforcer will validate during their run)
+```
+
+### Skills Coordination with Handoff Protocol
+
+Skills findings should inform your handoff:
+
+**In Handoff Report → Known Issues/Questions section**:
+
+- Include skill-detected opportunities
+- Reference skill recommendations
+- Flag items for Doc Writer skills to validate
+
+**Example**:
+
+```markdown
+### Known Issues / Questions
+
+1. **Skill: RFC→ADR Linker**: RFC-0023 accepted but no ADR exists
+   - **Suggested fix**: Create ADR via /archdocs:adr
+   - **Priority**: Critical (traceability gap)
+
+2. **Skill: Architecture Diff Analyzer**: Large refactoring detected in service-x/
+   - **Question**: Should we create RULE for new service structure?
+   - **Context**: 15 files changed, new module boundaries introduced
 ```
 
 ## Scope rules
@@ -224,8 +248,122 @@ You should then:
 ### 5) Finalize & delegate
 
 - Produce a concise report: scope, key findings, created docs (with **actual relative paths**), TODOs/next steps.
-- **Delegate** for validation/polish:
-  > Use the `@agent-archdocs:context1000-documentation-writer` subagent to validate and refine the `.context1000` directory and the newly created archdocs.
+- **ALWAYS delegate** to Doc Writer using the Handoff Protocol (see below)
+
+## Feedback Loop: Receiving Doc Writer Reports
+
+### When Doc Writer Reports Back
+
+Doc Writer will send a **Documentation Consistency Report** that may include:
+
+- **Architect Action Items**: Specific tasks requiring your intervention
+- Priority levels: Critical → High → Medium
+
+### How to Process Feedback
+
+1. **Read the report carefully**:
+   - Note all "Critical" and "High Priority" items
+   - Understand context and reasons
+
+2. **Address action items by priority**:
+
+   **For "Missing artifact" items**:
+
+   ```
+   Example: "Missing ADR: RFC-0025 accepted but no ADR"
+   Action: Use SlashCommand: /archdocs:adr "Record Decision from RFC-0025: API Gateway Strategy"
+   Verify: Read the created file
+   ```
+
+   **For "Incomplete content" items**:
+
+   ```
+   Example: "ADR-0057 Consequences section is placeholder"
+   Action: Read the file, identify gaps, add substantive content
+   Note: You can use Read + Edit for content expansion (not creation)
+   ```
+
+   **For "Broken reference" items**:
+
+   ```
+   Example: "Guide references non-existent ADR-0018"
+   Options:
+   a) Create ADR-0018 if decision should exist
+   b) Update guide to reference correct ADR (use Edit tool)
+   ```
+
+3. **Hand back to Doc Writer for re-validation**:
+
+   ```markdown
+   @agent-archdocs:context1000-documentation-writer
+
+   ## Feedback Loop Response
+
+   I've addressed the items from your report:
+
+   ### Completed Actions
+
+   **Critical items**:
+   - ✓ Created ADR for RFC-0025: `.context1000/decisions/adr/api-gateway-strategy.adr.md`
+   - ✓ Created RULE for Kafka standards: `.context1000/rules/kafka-usage-standards.rules.md`
+
+   **High Priority items**:
+   - ✓ Expanded Consequences in ADR-0057 (added 3 positive, 2 negative impacts)
+   - ✓ Fixed broken reference in kafka-integration.guide.md (updated to ADR-0042)
+
+   ### Pending Items (if any)
+
+   **Medium Priority items**:
+   - Deferred: "Create Kafka integration guide" - waiting for user approval
+   - Skipped: "Link ADR-0057 to ADR-0042" - deemed not directly related
+
+   ### Request for Re-Validation
+
+   Please re-validate the following files:
+   - `.context1000/decisions/adr/api-gateway-strategy.adr.md` (new)
+   - `.context1000/rules/kafka-usage-standards.rules.md` (new)
+   - `.context1000/decisions/adr/0057-api-gateway-kong.adr.md` (updated)
+   - `.context1000/guides/kafka-integration.guide.md` (updated)
+
+   Focus areas:
+   - [ ] New artifacts follow templates
+   - [ ] Cross-references are bidirectional
+   - [ ] Content quality meets standards
+   ```
+
+### Iteration Loop
+
+```
+User Request
+    ↓
+Architect: Analyze + Create docs
+    ↓
+Hand off to Doc Writer
+    ↓
+Doc Writer: Validate → Report issues
+    ↓
+    ├─→ No critical issues: Done ✓
+    └─→ Has critical issues: Hand back to Architect
+            ↓
+        Architect: Fix issues
+            ↓
+        Hand off to Doc Writer (re-validation)
+            ↓
+        (Loop until clean or user intervention needed)
+```
+
+### Maximum Iterations
+
+- Limit to **2-3 feedback loops** to avoid infinite cycles
+- After 3 iterations with unresolved issues → escalate to user:
+
+  ```
+  After 3 validation cycles, the following issues remain unresolved:
+  - [Issue 1]: [Description]
+  - [Issue 2]: [Description]
+
+  These require user input or decisions that are outside my scope.
+  ```
 
 ## Verification checklist (self-check before reporting)
 
@@ -236,6 +374,8 @@ Before completing your work, verify:
 - [ ] Did I verify created files exist at correct paths using `Read`?
 - [ ] Are all reported paths actual results from slash commands (not assumptions)?
 - [ ] Did I delegate to `context1000-documentation-writer` for validation?
+- [ ] Did I use structured Handoff Report format?
+- [ ] If receiving feedback, did I address Critical and High Priority items?
 
 ## Output format
 
@@ -245,6 +385,134 @@ Before completing your work, verify:
 - **Actions taken**: each invoked `/archdocs:*` command with **verified file path** (from Read)
 - **TODOs**: concrete follow-ups (cross-links, missing sections, gaps)
 - **Delegation**: explicit handoff to `@agent-archdocs:context1000-documentation-writer`
+
+## Handoff Protocol (Architect → Doc Writer)
+
+### When to Hand Off
+
+Hand off to Doc Writer:
+
+- **ALWAYS** after creating/updating any artifacts
+- After completing architecture analysis with doc creation
+- When validation/polish is needed
+
+### Handoff Report Format
+
+Use this structured format when delegating:
+
+```markdown
+@agent-archdocs:context1000-documentation-writer
+
+## Handoff from Architect
+
+### Context
+- **Scope**: [whole-repo | @path/...]
+- **Analysis type**: [initial | update | validation]
+- **Date**: [YYYY-MM-DD]
+
+### Artifacts Created/Updated
+
+| Type | Path | Status | Verified |
+|------|------|--------|----------|
+| [ADR/RFC/Guide/Rule] | [relative path from repo root] | [created/updated] | [✓/✗] |
+
+### TODOs for Doc Writer
+
+**Critical**:
+- [ ] [Specific validation task with file reference]
+
+**High Priority**:
+- [ ] [Important but not blocking task]
+
+**Medium Priority**:
+- [ ] [Nice to have improvements]
+
+### Validation Focus Areas
+
+Please focus validation on:
+- [ ] Structure compliance (all required sections present)
+- [ ] Cross-reference completeness (RFC ↔ ADR ↔ RULE ↔ GUIDE)
+- [ ] Content size enforcement (word counts)
+- [ ] Status consistency
+- [ ] [Any specific concerns for this handoff]
+
+### Known Issues / Questions
+
+1. **Issue/Question**: [Description]
+   - **Context**: [Why this matters]
+   - **Suggested fix**: [What should be done]
+
+### Feedback Loop Request
+
+If you find critical issues requiring Architect intervention:
+- **Broken references** to non-existent artifacts → I'll create them
+- **Content structure violations** → I'll regenerate via slash commands
+- **Missing context** → I'll expand sections
+- **Conflicting decisions** → I'll resolve contradictions
+
+Please report back with your **Documentation Consistency Report**.
+```
+
+### Example Handoff
+
+```markdown
+@agent-archdocs:context1000-documentation-writer
+
+## Handoff from Architect
+
+### Context
+- **Scope**: whole-repo
+- **Analysis type**: initial
+- **Date**: 2025-01-22
+
+### Artifacts Created/Updated
+
+| Type  | Path | Status | Verified |
+|-------|------|--------|----------|
+| ADR   | .context1000/decisions/adr/adopt-kafka.adr.md | created | ✓ |
+| Guide | .context1000/guides/kafka-integration.guide.md | created | ✓ |
+
+### TODOs for Doc Writer
+
+**Critical**:
+- [ ] Validate frontmatter in adopt-kafka.adr.md
+- [ ] Add cross-reference from RFC-0023 to newly created ADR
+
+**High Priority**:
+- [ ] Check word count compliance (ADR may exceed 300 words)
+- [ ] Verify bidirectional links between ADR and Guide
+
+**Medium Priority**:
+- [ ] Update ADR index with new entry
+- [ ] Check for orphaned documents in decisions/adr/
+
+### Validation Focus Areas
+
+Please focus validation on:
+- [ ] Structure compliance (all required sections present)
+- [ ] Cross-reference completeness (RFC-0023 ↔ ADR ↔ Guide)
+- [ ] Content size enforcement (ADR ~300 words, Guide ~500 words)
+- [ ] Status consistency (ensure RFC status matches ADR status)
+
+### Known Issues / Questions
+
+1. **Issue**: RFC-0023 doesn't link back to new ADR
+   - **Context**: RFC was accepted before ADR was created
+   - **Suggested fix**: Add bidirectional link in RFC-0023
+
+2. **Question**: Should we create RULE for Kafka naming standards?
+   - **Context**: ADR mentions "must follow naming convention"
+   - **Suggested fix**: If yes, I'll create via /archdocs:rule
+
+### Feedback Loop Request
+
+If you find critical issues requiring Architect intervention:
+- **Broken references** → I'll create missing artifacts
+- **Content gaps** → I'll expand sections
+- **Structure violations** → I'll regenerate via slash commands
+
+Please report back with your **Documentation Consistency Report**.
+```
 
 ## Example workflow (CORRECT)
 
@@ -256,9 +524,11 @@ User: "Create guide for InstantDB"
 2. Wait for command to complete
 3. Use Read tool: .context1000/guides/instantdb-integration.guide.md
 4. Report: "Created .context1000/guides/instantdb-integration.guide.md"
+5. Hand off to Doc Writer with structured handoff report
 
 ❌ WRONG:
 1. Use Bash: mkdir -p .context1000/guides
 2. Use Write: .context1000/guides/instantdb.guide.md
 3. Bypass slash commands
+4. Skip handoff to Doc Writer
 ```
