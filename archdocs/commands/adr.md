@@ -1,3 +1,8 @@
+---
+description: Create an Architecture Decision Record (ADR) document in the context1000 documentation structure
+argument-hint: "<title>" [--status draft|accepted|rejected]
+---
+
 # Create ADR Command
 
 Create a new Architecture Decision Record (ADR) document in the context1000 documentation structure.
@@ -20,6 +25,23 @@ When this slash command is invoked, Claude should:
 - **Total document**: aim for 200-300 words maximum
 - Use bullet points, not paragraphs. Each bullet: 1-2 short sentences max.
 - No filler words, no verbose explanations. Pure signal.
+
+## Argument Parsing
+
+Parse command arguments as follows:
+
+- **Title**: `$1` or all text before first `--` flag (required)
+- **--status**: Optional status value (draft|accepted|rejected). Default: `draft`
+- **--scope**: Optional scope/area tag (e.g., platform, backend, frontend)
+- **--id**: Optional ID assignment (auto|NNNN). Default: `auto`
+
+Examples:
+
+```bash
+/archdocs:adr "Choose database technology for user service"
+/archdocs:adr "Adopt gRPC for inter-service calls" --status proposed
+/archdocs:adr "Select frontend framework" --status draft --scope frontend
+```
 
 ## File Template
 
@@ -56,23 +78,18 @@ related: # Cross-references to related documents (one or many)
 ## Consequences
 
 **Positive:**
+
 - [Benefit 1]
 - [Benefit 2]
 
 **Negative:**
+
 - [Trade-off 1]
 - [Trade-off 2]
 
 **Risks:**
+
 - [Risk 1]
-```
-
-## Usage Examples
-
-```
-/create-adr Choose database technology for user service
-/create-adr Adopt microservices architecture
-/create-adr Select frontend framework
 ```
 
 ## Implementation Steps
@@ -98,7 +115,7 @@ ADRs use these status values:
 
 After creating the ADR, display:
 
-```
+```text
 ✓ Created ADR: {Title}
   Location: .context1000/decisions/adr/{title-slug}.adr.md
   Name: {title-slug}
@@ -111,3 +128,29 @@ Next steps:
 4. Add relevant tags and related documents in the frontmatter
 5. Update status to 'accepted' or 'rejected' when finalized
 ```
+
+## ADR Structure
+
+The ADR follows a minimal MADR (Markdown Architectural Decision Records) format:
+
+**Core sections (required):**
+
+- **Context**: Current situation/problem - max 3-5 bullet points
+- **Decision**: What we decided - max 3-5 bullet points
+- **Consequences**: Positive, negative, and risks - max 5-7 bullet points
+
+**Optional sections** (add if helpful):
+
+- **Decision Drivers**: Forces influencing the decision
+- **Considered Options**: Alternatives evaluated
+
+## Best Practices
+
+- Focus on the "why" behind decisions
+- Document alternatives considered
+- Include trade-offs and consequences
+- Link to related technical specs, RFCs, or GitHub issues
+- Be objective and factual
+- Update status as decision evolves
+- Use sentence case for headings (not Title Case)
+- Keep it concise - aim for 200-300 words maximum

@@ -1,3 +1,8 @@
+---
+description: Create a Request for Comments (RFC) document in the context1000 documentation structure
+argument-hint: "<title>" [--status draft|review|accepted|rejected]
+---
+
 # Create RFC Command
 
 Create a new Request for Comments (RFC) document in the context1000 documentation structure.
@@ -25,6 +30,21 @@ When this slash command is invoked, Claude should:
 - **Total document**: aim for 400-500 words maximum
 - Pure signal, no filler.
 
+## Argument Parsing
+
+Parse command arguments as follows:
+
+- **Title**: `$1` or all text before first `--` flag (required)
+- **--status**: Optional status (draft|review|accepted|rejected|deprecated). Default: `draft`
+
+Examples:
+
+```bash
+/archdocs:rfc "Introduce new authentication system"
+/archdocs:rfc "Event backbone for platform" --status review
+/archdocs:rfc "Add multi-tenancy support" --status draft
+```
+
 ## File Template
 
 Create the RFC file at `.context1000/decisions/rfc/{slug}.rfc.md` with this structure:
@@ -33,7 +53,7 @@ Create the RFC file at `.context1000/decisions/rfc/{slug}.rfc.md` with this stru
 ---
 name: {title-slug} # Unique identifier for the RFC
 title: {Title} # Human-readable title
-status: draft # accepted, rejected, draft
+status: draft # accepted, rejected, draft, review, deprecated
 tags: [] # Categorization tags
 related: # Cross-references to related documents (one or many)
   rfcs: [] # Related RFCs by name
@@ -88,13 +108,6 @@ related: # Cross-references to related documents (one or many)
 - [Risk/question 2]
 ```
 
-## Usage Examples
-
-```
-/create-rfc Introduce new authentication system
-/create-rfc Add support for multi-tenancy
-```
-
 ## Implementation Steps
 
 Follow these steps to create the RFC:
@@ -105,6 +118,16 @@ Follow these steps to create the RFC:
 4. **Populate content**: Include frontmatter (name, title, status: draft, tags, related) and template sections
 5. **Verify**: Use `Read` tool to confirm file was created correctly
 6. **Report**: Display success message with file path
+
+## Status Values
+
+RFCs use these status values:
+
+- **draft:** Initial proposal being written
+- **review:** Under team review and discussion
+- **accepted:** Approved and ready for implementation
+- **rejected:** Proposal not accepted
+- **deprecated:** No longer relevant or superseded
 
 ## Output Format
 
@@ -124,3 +147,73 @@ Next steps:
 5. Add relevant tags and related documents in the frontmatter
 6. Update status to 'accepted' or 'rejected' when finalized
 ```
+
+## RFC Structure Guidelines
+
+### Summary Section
+
+Brief overview answering:
+
+- Who needs this feature/change?
+- What is being proposed?
+- Why is this needed now?
+
+### Context and Problem
+
+Document:
+
+- Current limitations or pain points
+- Business or technical drivers
+- Scope of impact
+
+### Proposed Solution
+
+Describe:
+
+- Core technical approach
+- Key architectural components
+- Integration points
+- Non-goals (what's explicitly out of scope)
+
+### Alternatives
+
+List 2-3 alternative approaches considered and why they were not chosen.
+
+### Impact Analysis
+
+Consider:
+
+- Performance implications
+- Backward compatibility
+- Security considerations
+- Operational complexity
+- Team/resource requirements
+
+### Implementation Plan
+
+Break into milestones with:
+
+- Clear deliverables
+- Time estimates
+- Dependencies
+- Rollback strategy
+
+### Success Metrics
+
+Define measurable outcomes:
+
+- Performance targets
+- Adoption metrics
+- Quality indicators
+- Timeline goals
+
+## Best Practices
+
+- Keep it short and practical - avoid unnecessary background
+- Focus on technical design decisions
+- Include diagrams where helpful (use Mermaid or ASCII)
+- Link to related ADRs, specs, or issues
+- Update status as RFC progresses through review
+- When accepted, consider creating an ADR via `/archdocs:adr` to record the final decision
+- Use sentence case for headings
+- Be objective and factual
