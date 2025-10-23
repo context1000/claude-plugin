@@ -9,13 +9,19 @@ Create a new development or architectural rule document in the context1000 docum
 
 ## Instructions
 
+**IMPORTANT: Always check for existing documentation before creating new files.**
+
 When this slash command is invoked, Claude should:
 
-1. **Parse the rule title** from the conversation context
-2. **Create the directory structure** if it doesn't exist: `.context1000/rules/`
-3. **Generate slug**: Convert title to lowercase-kebab-case
-4. **Create the rule file** at `.context1000/rules/{slug}.rules.md` with proper frontmatter and template
-5. **Report success** with the file path
+1. **Search for existing rules**: Check `.context1000/rules/` for similar documentation
+   - List all existing rule files using `Glob` tool
+   - Search content for similar topics using `Grep` tool
+   - If found, ask user: "Found similar rule(s): [list]. Update existing or create new?"
+2. **Parse the rule title** from the conversation context
+3. **Create the directory structure** if it doesn't exist: `.context1000/rules/`
+4. **Generate slug**: Convert title to lowercase-kebab-case
+5. **Create/update the rule file** at `.context1000/rules/{slug}.rules.md` with proper frontmatter and template
+6. **Report success** with the file path
 
 **IMPORTANT: Keep rules EXTREMELY brief and actionable. Maximum limits:**
 
@@ -74,14 +80,22 @@ related: # Cross-references to related documents (one or many)
 
 ## Implementation Steps
 
-Follow these steps to create the rule:
+Follow these steps to create or update the rule:
 
-1. **Ensure directory exists**: Use `Bash(mkdir -p .context1000/rules)`
-2. **Convert title to slug**: "All APIs Must Use Authentication" → "all-apis-must-use-authentication"
-3. **Create file**: Use `Write` tool with path `.context1000/rules/{slug}.rules.md`
-4. **Populate content**: Include frontmatter (name, title, tags, related) and template sections
-5. **Verify**: Use `Read` tool to confirm file was created correctly
-6. **Report**: Display success message with file path
+1. **Check for existing documentation**: Search `.context1000/` directory for similar rules
+   - Use `Glob` tool with pattern `.context1000/**/*.rules.md` to find all existing rules
+   - Use `Grep` tool to search for similar titles or topics in rule files
+   - Use `Read` tool to examine potentially related rules
+2. **Determine action**: If similar documentation exists:
+   - Ask user whether to update existing rule or create new one
+   - If updating: proceed to step 6 (use Edit tool)
+   - If creating new: proceed to step 3
+3. **Ensure directory exists**: Use `Bash(mkdir -p .context1000/rules)`
+4. **Convert title to slug**: "All APIs Must Use Authentication" → "all-apis-must-use-authentication"
+5. **Create file**: Use `Write` tool with path `.context1000/rules/{slug}.rules.md`
+6. **Populate/update content**: Include frontmatter (name, title, tags, related) and template sections
+7. **Verify**: Use `Read` tool to confirm file was created/updated correctly
+8. **Report**: Display success message with file path
 
 ## Tags
 

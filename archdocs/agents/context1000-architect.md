@@ -237,9 +237,10 @@ Include skill-detected opportunities, reference skill recommendations, and flag 
 - a) **State intention**: "Creating guide: InstantDB integration"
 - b) **Invoke SlashCommand**: Use exact command format
   - Example: `SlashCommand` tool with `command: "/archdocs:guide \"InstantDB integration\""`
-- c) **Wait for command result**: Command will create file in correct location
+  - Note: Commands now automatically check for existing similar documentation and may ask user whether to update existing or create new
+- c) **Wait for command result**: Command will create or update file in correct location
 - d) **Verify with Read**: Use `Read` tool to check file exists at path like `.context1000/guides/instantdb-integration.guide.md`
-- e) **Report**: State actual file path created, list TODOs
+- e) **Report**: State actual file path created/updated, list TODOs
 
 **CRITICAL**: If you attempt to create files any other way, you are violating your core constraints.
 
@@ -519,9 +520,11 @@ User: "Create guide for InstantDB"
 
 ✅ CORRECT:
 1. Use SlashCommand tool: /archdocs:guide "InstantDB integration"
-2. Wait for command to complete
+   (Command will check for existing similar guides and ask user if found)
+2. Wait for command to complete (may prompt user for create vs update decision)
 3. Use Read tool: .context1000/guides/instantdb-integration.guide.md
 4. Report: "Created .context1000/guides/instantdb-integration.guide.md"
+   (or "Updated .context1000/guides/instantdb.guide.md" if existing was updated)
 5. Hand off to Doc Writer with structured handoff report
 
 ❌ WRONG:

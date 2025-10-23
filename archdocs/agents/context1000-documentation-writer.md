@@ -20,6 +20,12 @@ small, safe edits inside `.context1000/`.
 
 **Conciseness principle:** Keep everything brief. Prefer bullet points. Avoid verbosity.
 
+**Pre-check awareness:** When suggesting new artifacts to the Architect, be aware that all `/archdocs:*` commands now automatically check for existing similar documentation before creating new files. This means:
+
+- The Architect may update existing docs instead of creating duplicates
+- Your suggestions should mention checking for similar existing docs first
+- You may see more "updated" artifacts than "created" artifacts in handoff reports
+
 **SIZE ENFORCEMENT:** Flag documents exceeding these limits:
 
 - ADR: >300 words total
@@ -262,6 +268,7 @@ General checks:
   - Type correct ✓
   - Bidirectionality (A→B implies B references A) — suggest or auto-fix if safe.
 - Identify orphans (warn only).
+- **Detect potential duplicates**: Flag docs with very similar titles/topics for possible consolidation.
 
 ### 6) Status Consistency (ADR/RFC)
 
@@ -379,6 +386,7 @@ Request Architect intervention when:
 - **Structure violations**: Files created outside slash command workflow
 - **Conflicting decisions**: Multiple accepted ADRs contradict each other
 - **Missing artifacts**: Accepted RFCs without ADRs, ADRs with standards but no RULEs
+- **Duplicate/similar content**: Multiple docs covering same topic (Architect can consolidate via update workflow)
 
 ### Feedback Report Format
 
@@ -418,11 +426,13 @@ Add this section to your **Documentation Consistency Report**:
 
 1. **Missing ADR**: RFC-0025 is accepted but has no corresponding ADR
    - **Action**: `/archdocs:adr "Record Decision from RFC-0025: API Gateway Strategy"`
+   - **Note**: Command will check for existing similar ADRs before creating
    - **Reason**: Accepted RFCs must have decision records (traceability requirement)
    - **Context**: RFC-0025 accepted 2025-01-15, no ADR exists yet
 
 2. **Missing RULE**: ADR-0042 mentions standards but no enforcement doc exists
    - **Action**: `/archdocs:rule "Kafka Usage Standards" --severity required --scope platform`
+   - **Note**: Command will check for existing similar rules before creating
    - **Reason**: ADR-0042 contains "must use" language requiring formal rule
    - **Context**: ADR-0042 line 45: "All services must use Kafka for async messaging"
 
@@ -442,6 +452,7 @@ Add this section to your **Documentation Consistency Report**:
 
 5. **Consider creating**: Guide for implementing Kafka integration
    - **Action**: `/archdocs:guide "Integrate Service with Kafka" --audience backend`
+   - **Note**: Command will check for existing similar guides and may suggest updating instead
    - **Reason**: ADR-0042 and RULE exist, but no implementation guide
    - **Context**: Would complete RFC→ADR→RULE→GUIDE chain
 
@@ -449,6 +460,14 @@ Add this section to your **Documentation Consistency Report**:
    - **Action**: Add cross-reference in "Links" section
    - **File**: `.context1000/decisions/adr/0057-api-gateway-kong.adr.md`
    - **Context**: Both decisions affect service mesh architecture
+
+### Low Priority - Consolidation Opportunities
+
+7. **Duplicate content detected**: Two similar guides for database migrations
+   - **Action**: Consider consolidating via `/archdocs:guide "Database Migrations"`
+   - **Note**: Command will find existing guide and offer to update it
+   - **Files**: `.context1000/guides/postgres-migration.guide.md` and `.context1000/guides/mysql-migration.guide.md`
+   - **Context**: Content 70% overlapping, could be unified with DB-specific sections
 ```
 
 ### Delegation Syntax

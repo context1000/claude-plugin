@@ -9,13 +9,19 @@ Create a new Architecture Decision Record (ADR) document in the context1000 docu
 
 ## Instructions
 
+**IMPORTANT: Always check for existing documentation before creating new files.**
+
 When this slash command is invoked, Claude should:
 
-1. **Parse the ADR title** from the conversation context
-2. **Create the directory structure** if it doesn't exist: `.context1000/decisions/adr/`
-3. **Generate slug**: Convert title to lowercase-kebab-case
-4. **Create the ADR file** at `.context1000/decisions/adr/{slug}.adr.md` with proper frontmatter and template
-5. **Report success** with the file path
+1. **Search for existing ADRs**: Check `.context1000/decisions/adr/` for similar documentation
+   - List all existing ADR files using `Glob` tool
+   - Search content for similar topics using `Grep` tool
+   - If found, ask user: "Found similar ADR(s): [list]. Update existing or create new?"
+2. **Parse the ADR title** from the conversation context
+3. **Create the directory structure** if it doesn't exist: `.context1000/decisions/adr/`
+4. **Generate slug**: Convert title to lowercase-kebab-case
+5. **Create/update the ADR file** at `.context1000/decisions/adr/{slug}.adr.md` with proper frontmatter and template
+6. **Report success** with the file path
 
 **IMPORTANT: Keep all documentation EXTREMELY concise. Maximum limits:**
 
@@ -94,14 +100,22 @@ related: # Cross-references to related documents (one or many)
 
 ## Implementation Steps
 
-Follow these steps to create the ADR:
+Follow these steps to create or update the ADR:
 
-1. **Ensure directory exists**: Use `Bash(mkdir -p .context1000/decisions/adr)`
-2. **Convert title to slug**: "Choose Database Technology" → "choose-database-technology"
-3. **Create file**: Use `Write` tool with path `.context1000/decisions/adr/{slug}.adr.md`
-4. **Populate content**: Include frontmatter (name, title, status: draft, tags, related) and template sections
-5. **Verify**: Use `Read` tool to confirm file was created correctly
-6. **Report**: Display success message with file path
+1. **Check for existing documentation**: Search `.context1000/` directory for similar ADRs
+   - Use `Glob` tool with pattern `.context1000/**/*.adr.md` to find all existing ADRs
+   - Use `Grep` tool to search for similar titles or topics in ADR files
+   - Use `Read` tool to examine potentially related ADRs
+2. **Determine action**: If similar documentation exists:
+   - Ask user whether to update existing ADR or create new one
+   - If updating: proceed to step 6 (use Edit tool)
+   - If creating new: proceed to step 3
+3. **Ensure directory exists**: Use `Bash(mkdir -p .context1000/decisions/adr)`
+4. **Convert title to slug**: "Choose Database Technology" → "choose-database-technology"
+5. **Create file**: Use `Write` tool with path `.context1000/decisions/adr/{slug}.adr.md`
+6. **Populate/update content**: Include frontmatter (name, title, status: draft, tags, related) and template sections
+7. **Verify**: Use `Read` tool to confirm file was created/updated correctly
+8. **Report**: Display success message with file path
 
 ## Status Values
 
