@@ -101,7 +101,7 @@ Common rule tags (use in frontmatter):
 
 After creating the rule, display:
 
-```
+```text
 ✓ Created Rule: {Title}
   Location: .context1000/rules/{title-slug}.rules.md
   Name: {title-slug}

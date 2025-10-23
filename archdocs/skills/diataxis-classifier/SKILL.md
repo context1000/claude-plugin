@@ -135,7 +135,7 @@ Ask these questions:
 #### Tutorial → GUIDE
 
 ```bash
-/archdocs:create-guide "<Tutorial Title>" --audience <beginners|all>
+/archdocs:guide "<Tutorial Title>" --audience <beginners|all>
 ```
 
 **Structure recommendation**:
@@ -154,7 +154,7 @@ Ask these questions:
 #### How-To → GUIDE
 
 ```bash
-/archdocs:create-guide "<How to Do Task>" --audience <backend|frontend|infra>
+/archdocs:guide "<How to Do Task>" --audience <backend|frontend|infra>
 ```
 
 **Structure recommendation**:
@@ -176,7 +176,7 @@ Ask these questions:
 If reference is a standard that must be followed:
 
 ```bash
-/archdocs:create-rule "<Standard Name>" --severity required --scope <area>
+/archdocs:rule "<Standard Name>" --severity required --scope <area>
 ```
 
 Otherwise, suggest updating existing reference documentation or create a dedicated reference file in `docs/reference/`.
@@ -203,7 +203,7 @@ Explanations often belong in:
 Consider creating or linking to:
 
 ```bash
-/archdocs:create-adr "<Decision Title>" --status <status> --template madr --scope <area>
+/archdocs:adr "<Decision Title>" --status <status> --template madr --scope <area>
 ```
 
 ## Classification Workflow
@@ -225,10 +225,10 @@ grep "^#" <file-path>  # Extract headings
 
 ```
 Is it step-by-step for beginners?
-├─ Yes → Tutorial → /archdocs:create-guide (audience: beginners)
+├─ Yes → Tutorial → /archdocs:guide (audience: beginners)
 └─ No
    ├─ Is it solving a specific task?
-   │  ├─ Yes → How-To → /archdocs:create-guide (audience: role-specific)
+   │  ├─ Yes → How-To → /archdocs:guide (audience: role-specific)
    │  └─ No
    │     ├─ Is it pure facts/API/config?
    │     │  ├─ Yes → Reference → Update docs/reference/ or create RULE
@@ -252,7 +252,7 @@ Analysis:
 - Not pure facts → Not reference
 
 Classification: How-To Guide
-Recommendation: /archdocs:create-guide "Migrate from RabbitMQ to Kafka in Billing Service" --audience backend
+Recommendation: /archdocs:guide "Migrate from RabbitMQ to Kafka in Billing Service" --audience backend
 
 Structure:
 ## Goal: Migrate billing service message broker
@@ -286,7 +286,7 @@ Action: Check if ADR exists for gRPC adoption:
 grep -r "grpc\|gRPC" .context1000/decisions/adr/ docs/adr/
 
 If no ADR exists:
-/archdocs:create-adr "Adopt gRPC for Inter-Service Communication" --status accepted --template madr --scope platform
+/archdocs:adr "Adopt gRPC for Inter-Service Communication" --status accepted --template madr --scope platform
 
 Then link this explanation to ADR's "Context and Problem Statement" section.
 ```
@@ -306,7 +306,7 @@ Classification: Reference
 Recommendation: Update docs/reference/user-service-api.md
 
 If this represents a required API standard:
-/archdocs:create-rule "User Service API Standards" --severity required --scope backend
+/archdocs:rule "User Service API Standards" --severity required --scope backend
 
 Structure:
 ## Endpoints
@@ -334,7 +334,7 @@ Analysis:
 - Explains concepts along the way → Tutorial
 
 Classification: Tutorial
-Recommendation: /archdocs:create-guide "Your First Kubernetes Deployment" --audience all
+Recommendation: /archdocs:guide "Your First Kubernetes Deployment" --audience all
 
 Structure:
 ## What You'll Learn
@@ -392,10 +392,10 @@ Sometimes content spans multiple types. In this case:
 3. **Create each via appropriate command**:
 
    ```bash
-   /archdocs:create-guide "Getting Started with Feature Flags" --audience all
-   /archdocs:create-guide "Implement Feature Flags in Express.js" --audience backend
+   /archdocs:guide "Getting Started with Feature Flags" --audience all
+   /archdocs:guide "Implement Feature Flags in Express.js" --audience backend
    # Reference goes in docs/reference/
-   /archdocs:create-adr "Adopt Unleash for Feature Management" --status accepted --template madr --scope platform
+   /archdocs:adr "Adopt Unleash for Feature Management" --status accepted --template madr --scope platform
    ```
 
 ## Quality Checklist
@@ -407,7 +407,7 @@ Before recommending an artifact type, verify:
 - [ ] Structure template matches the Diátaxis type
 - [ ] Target audience is correctly identified
 - [ ] Related documents are identified for cross-linking
-- [ ] Creation command uses proper `/archdocs:create-*` format
+- [ ] Creation command uses proper `/archdocs:*` format
 
 ## Integration Points
 

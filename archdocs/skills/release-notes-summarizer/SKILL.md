@@ -160,19 +160,19 @@ Flag for manual review:
 ### When Breaking Change Lacks GUIDE
 
 ```bash
-/archdocs:create-guide "Migrate from <old> to <new>" --audience <affected-teams>
+/archdocs:guide "Migrate from <old> to <new>" --audience <affected-teams>
 ```
 
 ### When New Feature Lacks RULE
 
 ```bash
-/archdocs:create-rule "<Feature> Usage Standards" --severity warn --scope <area>
+/archdocs:rule "<Feature> Usage Standards" --severity warn --scope <area>
 ```
 
 ### When Architectural Change Lacks ADR
 
 ```bash
-/archdocs:create-adr "Record Decision: <Change>" --status accepted --template madr --scope <area>
+/archdocs:adr "Record Decision: <Change>" --status accepted --template madr --scope <area>
 ```
 
 ## Example Workflows
@@ -193,8 +193,8 @@ Breaking Change: OAuth token format (has migration guide ✓)
 Breaking Change: Database connection pool config (no guide ❌)
 
 # Create missing documentation
-/archdocs:create-guide "Migrate Database Connection Pool Config" --audience backend
-/archdocs:create-rule "Database Connection Pool Standards" --severity required --scope backend
+/archdocs:guide "Migrate Database Connection Pool Config" --audience backend
+/archdocs:rule "Database Connection Pool Standards" --severity required --scope backend
 
 # Generate release notes with links
 ```

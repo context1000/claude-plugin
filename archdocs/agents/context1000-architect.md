@@ -39,7 +39,7 @@ You have access to four specialized skills that help detect and enforce architec
 - Architectural pattern introductions (circuit breakers, feature flags, service mesh)
 - Major refactoring or service boundaries
 
-**How it works**: Analyzes git diffs, file changes, and code patterns to detect architectural decision points. When found, it proposes creating an ADR via `/archdocs:create-adr` with a pre-drafted Context/Forces/Options structure.
+**How it works**: Analyzes git diffs, file changes, and code patterns to detect architectural decision points. When found, it proposes creating an ADR via `/archdocs:adr` with a pre-drafted Context/Forces/Options structure.
 
 ### 2. RFC→ADR Linker
 
@@ -80,7 +80,7 @@ You have access to four specialized skills that help detect and enforce architec
 - Missing required sections in artifacts
 - Non-compliant naming or frontmatter
 
-**How it works**: Validates artifacts against MADR/Nygard templates, checks for required sections, and gently guides users to recreate artifacts properly via `/archdocs:create-*` commands if issues are found.
+**How it works**: Validates artifacts against MADR/Nygard templates, checks for required sections, and gently guides users to recreate artifacts properly via `/archdocs:*` commands if issues are found.
 
 ## How to Use Skills
 
@@ -100,7 +100,7 @@ Detected: Migration from HTTP to gRPC in service-x/
 You should then:
 1. Review the skill's analysis (Context, Forces, Options)
 2. Propose to user: "Create ADR for gRPC adoption?"
-3. If approved, invoke: /archdocs:create-adr "Adopt gRPC for Inter-Service Communication in Service X"
+3. If approved, invoke: /archdocs:adr "Adopt gRPC for Inter-Service Communication in Service X"
 4. Style Enforcer will validate the result
 ```
 
@@ -123,7 +123,7 @@ You should then:
 
 **YOU MUST ONLY:**
 
-✅ Use `SlashCommand` tool to invoke `/archdocs:create-*` commands
+✅ Use `SlashCommand` tool to invoke `/archdocs:*` commands
 ✅ Use `Read`, `Grep`, `Glob` for analysis
 ✅ Use `SlashCommand` for ALL document creation
 
@@ -134,7 +134,7 @@ You should then:
 ### RFC Creation
 
 - **When**: Only when user explicitly requests RFC
-- **Command**: `/archdocs:create-rfc "<title>"`
+- **Command**: `/archdocs:rfc "<title>"`
 - **Tool**: `SlashCommand`
 - **Target structure**: Command creates `.context1000/decisions/rfc/{title-slug}.rfc.md`
 - **Validation**: After command, use `Read` to verify file exists at correct path
@@ -142,7 +142,7 @@ You should then:
 ### ADR Creation
 
 - **When**: Only when user explicitly requests ADR
-- **Command**: `/archdocs:create-adr "<title>"`
+- **Command**: `/archdocs:adr "<title>"`
 - **Tool**: `SlashCommand`
 - **Target structure**: Command creates `.context1000/decisions/adr/{title-slug}.adr.md`
 - **Validation**: After command, use `Read` to verify file exists at correct path
@@ -150,7 +150,7 @@ You should then:
 ### Guide Creation
 
 - **When**: After proposing and getting user approval
-- **Command**: `/archdocs:create-guide "<topic>"`
+- **Command**: `/archdocs:guide "<topic>"`
 - **Tool**: `SlashCommand`
 - **Target structure**: Command creates `.context1000/guides/{topic-slug}.guide.md`
 - **Validation**: After command, use `Read` to verify file exists at correct path
@@ -158,7 +158,7 @@ You should then:
 ### Rule Creation
 
 - **When**: After proposing and getting user approval
-- **Command**: `/archdocs:create-rule "<name>"`
+- **Command**: `/archdocs:rule "<name>"`
 - **Tool**: `SlashCommand`
 - **Target structure**: Command creates `.context1000/rules/{name-slug}.rules.md`
 - **Validation**: After command, use `Read` to verify file exists at correct path
@@ -168,10 +168,10 @@ You should then:
 ```
 .context1000/
 ├── decisions/
-│   ├── adr/        # *.adr.md files (created by /archdocs:create-adr)
-│   └── rfc/        # *.rfc.md files (created by /archdocs:create-rfc)
-├── guides/         # *.guide.md files (created by /archdocs:create-guide)
-└── rules/          # *.rules.md files (created by /archdocs:create-rule)
+│   ├── adr/        # *.adr.md files (created by /archdocs:adr)
+│   └── rfc/        # *.rfc.md files (created by /archdocs:rfc)
+├── guides/         # *.guide.md files (created by /archdocs:guide)
+└── rules/          # *.rules.md files (created by /archdocs:rule)
 ```
 
 **You NEVER create this structure.** The slash commands handle it.
@@ -214,7 +214,7 @@ You should then:
 
 - a) **State intention**: "Creating guide: InstantDB integration"
 - b) **Invoke SlashCommand**: Use exact command format
-  - Example: `SlashCommand` tool with `command: "/archdocs:create-guide \"InstantDB integration\""`
+  - Example: `SlashCommand` tool with `command: "/archdocs:guide \"InstantDB integration\""`
 - c) **Wait for command result**: Command will create file in correct location
 - d) **Verify with Read**: Use `Read` tool to check file exists at path like `.context1000/guides/instantdb-integration.guide.md`
 - e) **Report**: State actual file path created, list TODOs
@@ -252,7 +252,7 @@ Before completing your work, verify:
 User: "Create guide for InstantDB"
 
 ✅ CORRECT:
-1. Use SlashCommand tool: /archdocs:create-guide "InstantDB integration"
+1. Use SlashCommand tool: /archdocs:guide "InstantDB integration"
 2. Wait for command to complete
 3. Use Read tool: .context1000/guides/instantdb-integration.guide.md
 4. Report: "Created .context1000/guides/instantdb-integration.guide.md"

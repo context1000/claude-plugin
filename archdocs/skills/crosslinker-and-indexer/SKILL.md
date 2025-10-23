@@ -74,7 +74,7 @@ grep -r "RFC.*$rfc_id\|rfc-$rfc_id" docs/adr/ .context1000/decisions/adr/
 
 **Trigger**: If accepted RFC has no corresponding ADR → recommend creation:
 ```bash
-/archdocs:create-adr "Record Decision from RFC-<ID>: <Title>" --status accepted --template madr --scope <area>
+/archdocs:adr "Record Decision from RFC-<ID>: <Title>" --status accepted --template madr --scope <area>
 ```
 
 #### ADR → RULE Linkage
@@ -95,7 +95,7 @@ grep -r "<technology-from-adr>" docs/rules/ .context1000/rules/
 
 **Trigger**: If ADR specifies standards but no RULE exists → recommend:
 ```bash
-/archdocs:create-rule "<Standard from ADR>" --severity required --scope <area>
+/archdocs:rule "<Standard from ADR>" --severity required --scope <area>
 ```
 
 #### ADR/RULE → GUIDE Linkage
@@ -318,7 +318,7 @@ done
 Detected: RFC-0023 status changed to "Accepted"
 Action:
 1. Check if ADR exists referencing RFC-0023
-2. If not: /archdocs:create-adr "Record Decision from RFC-0023: Adopt Kafka" --status accepted --template madr --scope platform
+2. If not: /archdocs:adr "Record Decision from RFC-0023: Adopt Kafka" --status accepted --template madr --scope platform
 3. Update RFC-0023 to link to new ADR
 4. Update ADR index
 ```
@@ -328,7 +328,7 @@ Action:
 Detected: ADR-0042 contains "All services must use Kafka for async messaging"
 Action:
 1. Check if RULE exists for Kafka usage standards
-2. If not: /archdocs:create-rule "Kafka Usage Standards" --severity required --scope platform
+2. If not: /archdocs:rule "Kafka Usage Standards" --severity required --scope platform
 3. Update RULE to reference ADR-0042
 4. Update ADR-0042 to link to RULE
 5. Update RULE index
@@ -339,7 +339,7 @@ Action:
 Detected: RULE "Kafka Topic Naming Convention" but no implementation guide
 Action:
 1. Check if GUIDE exists for Kafka topic creation
-2. If not: /archdocs:create-guide "Configure Kafka Topics" --audience backend
+2. If not: /archdocs:guide "Configure Kafka Topics" --audience backend
 3. Update GUIDE to reference RULE
 4. Update RULE to link to GUIDE
 5. Update GUIDE index
@@ -384,10 +384,10 @@ Actions:
       - [ADR-0057: Adopt Kong as API Gateway](../adr/0057-api-gateway-kong.adr.md)
 
    c) Recommend RULE creation:
-      /archdocs:create-rule "API Gateway Usage Standards" --severity required --scope infrastructure
+      /archdocs:rule "API Gateway Usage Standards" --severity required --scope infrastructure
 
    d) Recommend GUIDE creation:
-      /archdocs:create-guide "Configure Kong API Gateway" --audience infra
+      /archdocs:guide "Configure Kong API Gateway" --audience infra
 
 4. Update ADR index:
    Add row to "Active Decisions" table:

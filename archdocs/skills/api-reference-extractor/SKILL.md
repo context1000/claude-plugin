@@ -675,7 +675,7 @@ Database server hostname.
 If reference documentation needs accompanying procedures:
 
 ```bash
-/archdocs:create-guide "<Service> API Integration" --audience backend
+/archdocs:guide "<Service> API Integration" --audience backend
 ```
 
 Link from reference to guide:
@@ -691,7 +691,7 @@ Link from reference to guide:
 If reference describes required standards:
 
 ```bash
-/archdocs:create-rule "API Response Format Standards" --severity required --scope backend
+/archdocs:rule "API Response Format Standards" --severity required --scope backend
 ```
 
 ### When Reference Lives in docs/reference/
@@ -705,7 +705,7 @@ Create or update files in `docs/reference/`:
 - `docs/reference/config/<service>-config.md`
 - `docs/reference/errors/<service>-errors.md`
 
-**Do NOT use `/archdocs:create-*` for these** - use Edit tool to update existing reference files.
+**Do NOT use `/archdocs:*` slash commands for these** - use Edit tool to update existing reference files.
 
 ## Example Extraction
 
@@ -731,7 +731,7 @@ grep "^Commands:" -A 100 /tmp/billingctl-help.txt
 #   Use Edit tool to update
 # If it doesn't exist:
 #   Consider creating via GUIDE if it includes usage instructions
-#   /archdocs:create-guide "billingctl CLI Reference" --audience backend
+#   /archdocs:guide "billingctl CLI Reference" --audience backend
 ```
 
 ## Quality Checklist

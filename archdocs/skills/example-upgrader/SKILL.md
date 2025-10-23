@@ -383,7 +383,7 @@ When examples change significantly:
 
 ```bash
 # If new procedure is needed
-/archdocs:create-guide "Migrate to <New API> from <Old API>" --audience <role>
+/archdocs:guide "Migrate to <New API> from <Old API>" --audience <role>
 ```
 
 ### Update Rules
@@ -391,7 +391,7 @@ When new best practices emerge:
 
 ```bash
 # If new standard should be enforced
-/archdocs:create-rule "Use <Current API> for <Purpose>" --severity warn --scope <area>
+/archdocs:rule "Use <Current API> for <Purpose>" --severity warn --scope <area>
 ```
 
 ### Link from Examples
@@ -444,7 +444,7 @@ For production configuration, see:
 
 5. Create migration guide if needed:
    ```bash
-   /archdocs:create-guide "Migrate gRPC Client to v1.63" --audience backend
+   /archdocs:guide "Migrate gRPC Client to v1.63" --audience backend
    ```
 
 ### Pattern 2: Deprecated API Replacement

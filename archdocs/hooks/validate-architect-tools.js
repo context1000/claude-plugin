@@ -72,10 +72,10 @@ process.stdin.on('end', () => {
         const recentContext = recentLines.join('\n');
         isInsideSlashCommand =
           recentContext.includes('"type":"command_message"') ||
-          recentContext.includes('/archdocs:create-guide') ||
-          recentContext.includes('/archdocs:create-adr') ||
-          recentContext.includes('/archdocs:create-rfc') ||
-          recentContext.includes('/archdocs:create-rule');
+          recentContext.includes('/archdocs:guide') ||
+          recentContext.includes('/archdocs:adr') ||
+          recentContext.includes('/archdocs:rfc') ||
+          recentContext.includes('/archdocs:rule');
 
         // Check for documentation-writer agent in recent lines
         isDocumentationWriter =
@@ -107,13 +107,13 @@ process.stdin.on('end', () => {
         blockTool(toolName, `🚫 BLOCKED: Cannot use Write tool to create .context1000 documentation directly.
 
 You must use SlashCommand tool to invoke:
-  /archdocs:create-guide "<topic>"
-  /archdocs:create-rule "<name>"
-  /archdocs:create-adr "<title>"
-  /archdocs:create-rfc "<title>"
+  /archdocs:guide "<topic>"
+  /archdocs:rule "<name>"
+  /archdocs:adr "<title>"
+  /archdocs:rfc "<title>"
 
 Example:
-  SlashCommand tool with command: "/archdocs:create-guide \\"InstantDB integration\\""
+  SlashCommand tool with command: "/archdocs:guide \\"InstantDB integration\\""
 
 The slash command will create the file in the correct location with correct structure.`);
         return;
@@ -129,7 +129,7 @@ The slash command will create the file in the correct location with correct stru
 Architecture analysis should CREATE new documents via SlashCommand, not edit existing ones.
 File modifications in .context1000/ are handled by context1000-documentation-writer agent.
 
-Use SlashCommand tool to CREATE new documents via /archdocs:create-* commands.`);
+Use SlashCommand tool to CREATE new documents via /archdocs:* commands.`);
         return;
       }
     }
@@ -151,7 +151,7 @@ Use SlashCommand tool to CREATE new documents via /archdocs:create-* commands.`)
 Blocked command: ${command}
 Reason: ${desc}
 
-You must use SlashCommand tool with /archdocs:create-* commands to create documentation.
+You must use SlashCommand tool with /archdocs:* commands to create documentation.
 Bash is only allowed for read-only operations.`);
           return;
         }

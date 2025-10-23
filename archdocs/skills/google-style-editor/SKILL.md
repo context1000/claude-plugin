@@ -354,19 +354,19 @@ When editing creates the need for new documentation:
 ### For New Guides
 
 ```bash
-/archdocs:create-guide "<Title>" --audience <role>
+/archdocs:guide "<Title>" --audience <role>
 ```
 
 ### For New Rules (Standards)
 
 ```bash
-/archdocs:create-rule "<Rule Title>" --severity <level> --scope <area>
+/archdocs:rule "<Rule Title>" --severity <level> --scope <area>
 ```
 
 ### For Architectural Decisions
 
 ```bash
-/archdocs:create-adr "<Decision Title>" --status <status> --template madr --scope <area>
+/archdocs:adr "<Decision Title>" --status <status> --template madr --scope <area>
 ```
 
 ## Example Edit Session

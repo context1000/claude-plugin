@@ -241,7 +241,7 @@ grep -rn "\brepo\b" docs/ .context1000/ | grep -v "git.*repo\|npm.*repo"
 When terminology is critical:
 
 ```bash
-/archdocs:create-rule "Inclusive Terminology Standards" --severity required --scope all
+/archdocs:rule "Inclusive Terminology Standards" --severity required --scope all
 ```
 
 Example RULE content:
@@ -366,7 +366,7 @@ When phasing out terminology:
 
 2. **Create migration guidance**:
    ```bash
-   /archdocs:create-guide "Migrate to Inclusive Terminology" --audience all
+   /archdocs:guide "Migrate to Inclusive Terminology" --audience all
    ```
 
 3. **Update all documentation**:
