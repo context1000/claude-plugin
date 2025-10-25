@@ -1,6 +1,6 @@
 ---
 description: Create a Request for Comments (RFC) document in the context1000 documentation structure
-argument-hint: "<title>" [--status draft|review|accepted|rejected]
+argument-hint: "<title>" [--status draft|review|accepted|rejected] [--project <projectName>]
 ---
 
 # Create RFC Command
@@ -42,18 +42,28 @@ Parse command arguments as follows:
 
 - **Title**: `$1` or all text before first `--` flag (required)
 - **--status**: Optional status (draft|review|accepted|rejected|deprecated). Default: `draft`
+- **--project**: Optional project name. If specified, creates RFC in `.context1000/projects/{projectName}/decisions/rfc/`. If not specified, creates in `.context1000/decisions/rfc/`
 
 Examples:
 
 ```bash
+# Root-level RFC (organization-wide)
 /archdocs:rfc "Introduce new authentication system"
 /archdocs:rfc "Event backbone for platform" --status review
 /archdocs:rfc "Add multi-tenancy support" --status draft
+
+# Project-scoped RFC
+/archdocs:rfc "Implement caching strategy" --project user-service
+/archdocs:rfc "API rate limiting" --project mobile-app --status review
 ```
 
 ## File Template
 
-Create the RFC file at `.context1000/decisions/rfc/{slug}.rfc.md` with this structure:
+**File path depends on --project flag:**
+- **Without --project**: `.context1000/decisions/rfc/{slug}.rfc.md` (root-level, organization-wide)
+- **With --project**: `.context1000/projects/{projectName}/decisions/rfc/{slug}.rfc.md` (project-scoped)
+
+Create the RFC file with this structure:
 
 ```markdown
 ---
@@ -118,20 +128,26 @@ related: # Cross-references to related documents (one or many)
 
 Follow these steps to create or update the RFC:
 
-1. **Check for existing documentation**: Search `.context1000/` directory for similar RFCs
-   - Use `Glob` tool with pattern `.context1000/**/*.rfc.md` to find all existing RFCs
+1. **Parse --project flag**: Check if `--project <projectName>` was provided
+   - If provided: set base path to `.context1000/projects/{projectName}/decisions/rfc/`
+   - If not provided: set base path to `.context1000/decisions/rfc/`
+2. **Validate project exists** (if --project specified):
+   - Check if `.context1000/projects/{projectName}/project.md` exists
+   - If not, inform user and suggest running `/archdocs:project "{projectName}"` first
+3. **Check for existing documentation**: Search for similar RFCs in the target location
+   - Use `Glob` tool with pattern `{basePath}/*.rfc.md` to find all existing RFCs
    - Use `Grep` tool to search for similar titles or topics in RFC files
    - Use `Read` tool to examine potentially related RFCs
-2. **Determine action**: If similar documentation exists:
+4. **Determine action**: If similar documentation exists:
    - Ask user whether to update existing RFC or create new one
-   - If updating: proceed to step 6 (use Edit tool)
-   - If creating new: proceed to step 3
-3. **Ensure directory exists**: Use `Bash(mkdir -p .context1000/decisions/rfc)`
-4. **Convert title to slug**: "Add Multi-Tenancy Support" → "add-multi-tenancy-support"
-5. **Create file**: Use `Write` tool with path `.context1000/decisions/rfc/{slug}.rfc.md`
-6. **Populate/update content**: Include frontmatter (name, title, status: draft, tags, related) and template sections
-7. **Verify**: Use `Read` tool to confirm file was created/updated correctly
-8. **Report**: Display success message with file path
+   - If updating: proceed to step 8 (use Edit tool)
+   - If creating new: proceed to step 5
+5. **Ensure directory exists**: Use `Bash(mkdir -p {basePath})`
+6. **Convert title to slug**: "Add Multi-Tenancy Support" → "add-multi-tenancy-support"
+7. **Create file**: Use `Write` tool with path `{basePath}/{slug}.rfc.md`
+8. **Populate/update content**: Include frontmatter (name, title, status: draft, tags, related) and template sections
+9. **Verify**: Use `Read` tool to confirm file was created/updated correctly
+10. **Report**: Display success message with file path and scope (root-level or project-scoped)
 
 ## Status Values
 

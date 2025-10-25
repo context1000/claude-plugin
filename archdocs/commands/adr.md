@@ -1,6 +1,6 @@
 ---
 description: Create an Architecture Decision Record (ADR) document in the context1000 documentation structure
-argument-hint: "<title>" [--status draft|accepted|rejected]
+argument-hint: "<title>" [--status draft|accepted|rejected] [--project <projectName>]
 ---
 
 # Create ADR Command
@@ -40,18 +40,29 @@ Parse command arguments as follows:
 - **--status**: Optional status value (draft|accepted|rejected). Default: `draft`
 - **--scope**: Optional scope/area tag (e.g., platform, backend, frontend)
 - **--id**: Optional ID assignment (auto|NNNN). Default: `auto`
+- **--project**: Optional project name. If specified, creates ADR in `.context1000/projects/{projectName}/decisions/adr/`. If not specified, creates in `.context1000/decisions/adr/`
 
 Examples:
 
 ```bash
+# Root-level ADR (organization-wide)
 /archdocs:adr "Choose database technology for user service"
 /archdocs:adr "Adopt gRPC for inter-service calls" --status proposed
 /archdocs:adr "Select frontend framework" --status draft --scope frontend
+
+# Project-scoped ADR
+/archdocs:adr "Choose authentication method" --project user-service
+/archdocs:adr "API versioning strategy" --project mobile-app --status draft
 ```
 
 ## File Template
 
-Create the ADR file at `.context1000/decisions/adr/{slug}.adr.md` with this structure:
+**File path depends on --project flag:**
+
+- **Without --project**: `.context1000/decisions/adr/{slug}.adr.md` (root-level, organization-wide)
+- **With --project**: `.context1000/projects/{projectName}/decisions/adr/{slug}.adr.md` (project-scoped)
+
+Create the ADR file with this structure:
 
 ```markdown
 ---
@@ -102,20 +113,26 @@ related: # Cross-references to related documents (one or many)
 
 Follow these steps to create or update the ADR:
 
-1. **Check for existing documentation**: Search `.context1000/` directory for similar ADRs
-   - Use `Glob` tool with pattern `.context1000/**/*.adr.md` to find all existing ADRs
+1. **Parse --project flag**: Check if `--project <projectName>` was provided
+   - If provided: set base path to `.context1000/projects/{projectName}/decisions/adr/`
+   - If not provided: set base path to `.context1000/decisions/adr/`
+2. **Validate project exists** (if --project specified):
+   - Check if `.context1000/projects/{projectName}/project.md` exists
+   - If not, inform user and suggest running `/archdocs:project "{projectName}"` first
+3. **Check for existing documentation**: Search for similar ADRs in the target location
+   - Use `Glob` tool with pattern `{basePath}/*.adr.md` to find all existing ADRs
    - Use `Grep` tool to search for similar titles or topics in ADR files
    - Use `Read` tool to examine potentially related ADRs
-2. **Determine action**: If similar documentation exists:
+4. **Determine action**: If similar documentation exists:
    - Ask user whether to update existing ADR or create new one
-   - If updating: proceed to step 6 (use Edit tool)
-   - If creating new: proceed to step 3
-3. **Ensure directory exists**: Use `Bash(mkdir -p .context1000/decisions/adr)`
-4. **Convert title to slug**: "Choose Database Technology" → "choose-database-technology"
-5. **Create file**: Use `Write` tool with path `.context1000/decisions/adr/{slug}.adr.md`
-6. **Populate/update content**: Include frontmatter (name, title, status: draft, tags, related) and template sections
-7. **Verify**: Use `Read` tool to confirm file was created/updated correctly
-8. **Report**: Display success message with file path
+   - If updating: proceed to step 8 (use Edit tool)
+   - If creating new: proceed to step 5
+5. **Ensure directory exists**: Use `Bash(mkdir -p {basePath})`
+6. **Convert title to slug**: "Choose Database Technology" → "choose-database-technology"
+7. **Create file**: Use `Write` tool with path `{basePath}/{slug}.adr.md`
+8. **Populate/update content**: Include frontmatter (name, title, status: draft, tags, related) and template sections
+9. **Verify**: Use `Read` tool to confirm file was created/updated correctly
+10. **Report**: Display success message with file path and scope (root-level or project-scoped)
 
 ## Status Values
 

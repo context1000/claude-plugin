@@ -108,13 +108,15 @@ process.stdin.on('end', () => {
         blockTool(toolName, `🚫 BLOCKED: Cannot use Write tool to create .context1000 documentation directly.
 
 You must use SlashCommand tool to invoke:
-  /archdocs:guide "<topic>"
-  /archdocs:rule "<name>"
-  /archdocs:adr "<title>"
-  /archdocs:rfc "<title>"
+  /archdocs:project "<projectName>"
+  /archdocs:guide "<topic>" [--project <projectName>]
+  /archdocs:rule "<name>" [--project <projectName>]
+  /archdocs:adr "<title>" [--project <projectName>]
+  /archdocs:rfc "<title>" [--project <projectName>]
 
 Example:
   SlashCommand tool with command: "/archdocs:guide \\"InstantDB integration\\""
+  SlashCommand tool with command: "/archdocs:adr \\"Choose database\\" --project user-service"
 
 The slash command will create the file in the correct location with correct structure.`);
         return;

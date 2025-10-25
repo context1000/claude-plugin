@@ -63,10 +63,10 @@ Create the project.md file at `.context1000/projects/{projectName}/project.md` w
 ```markdown
 ---
 name: {projectName} # Unique identifier for the project
-title: {ProjectName} # Human-readable project name
+title: {ProjectName} # Human-readable title
 tags: [] # Categorization tags
-repository: "" # Link to project repository (optional)
-related: # Cross-references to related documents
+repository: "" # Project repository URL
+related: # Cross-references to related documents (one or many)
   rfcs: [] # Related RFCs by name
   adrs: [] # Related ADRs by name
   rules: [] # Related rules by name
@@ -76,27 +76,7 @@ related: # Cross-references to related documents
 
 # {ProjectName}
 
-## Overview
-
-[Brief description of the project, its purpose, and goals]
-
-## Key Information
-
-- **Status**: [Active/Planning/Archived]
-- **Team**: [Team or individuals responsible]
-- **Started**: [Date]
-
-## Documentation
-
-This project's documentation is organized as follows:
-
-- **Decisions** (`decisions/`): Architecture decisions (ADRs) and proposals (RFCs) specific to this project
-- **Guides** (`guides/`): How-to documentation and tutorials for working with this project
-- **Rules** (`rules/`): Standards, conventions, and requirements for this project
-
-## Related Projects
-
-[List any related projects or dependencies]
+[Brief description of the project - 2-3 sentences maximum]
 ```
 
 ## Implementation Steps

@@ -1,6 +1,6 @@
 ---
 description: Create a technical guide document in the context1000 documentation structure
-argument-hint: "<title>" [--audience backend|frontend|infra]
+argument-hint: "<title>" [--audience backend|frontend|infra] [--project <projectName>]
 ---
 
 # Create Guide Command
@@ -38,19 +38,29 @@ Parse command arguments as follows:
 
 - **Title**: `$1` or all text before first `--` flag (required)
 - **--audience**: Optional target audience (backend|frontend|infra|all). Default: `all`
+- **--project**: Optional project name. If specified, creates guide in `.context1000/projects/{projectName}/guides/`. If not specified, creates in `.context1000/guides/`
 
 Examples:
 
 ```bash
+# Root-level guides (organization-wide)
 /archdocs:guide "Getting started with microservices"
 /archdocs:guide "Database migration best practices" --audience backend
 /archdocs:guide "Kubernetes deployment guide" --audience infra
 /archdocs:guide "Working with InstantDB" --audience frontend
+
+# Project-scoped guides
+/archdocs:guide "Setting up local development" --project user-service
+/archdocs:guide "Testing authentication flows" --project mobile-app --audience frontend
 ```
 
 ## File Template
 
-Create the guide file at `.context1000/guides/{slug}.guide.md` with this structure:
+**File path depends on --project flag:**
+- **Without --project**: `.context1000/guides/{slug}.guide.md` (root-level, organization-wide)
+- **With --project**: `.context1000/projects/{projectName}/guides/{slug}.guide.md` (project-scoped)
+
+Create the guide file with this structure:
 
 ```markdown
 ---
@@ -88,20 +98,26 @@ related: # Cross-references to related documents (one or many)
 
 Follow these steps to create or update the guide:
 
-1. **Check for existing documentation**: Search `.context1000/` directory for similar guides
-   - Use `Glob` tool with pattern `.context1000/**/*.guide.md` to find all existing guides
+1. **Parse --project flag**: Check if `--project <projectName>` was provided
+   - If provided: set base path to `.context1000/projects/{projectName}/guides/`
+   - If not provided: set base path to `.context1000/guides/`
+2. **Validate project exists** (if --project specified):
+   - Check if `.context1000/projects/{projectName}/project.md` exists
+   - If not, inform user and suggest running `/archdocs:project "{projectName}"` first
+3. **Check for existing documentation**: Search for similar guides in the target location
+   - Use `Glob` tool with pattern `{basePath}/*.guide.md` to find all existing guides
    - Use `Grep` tool to search for similar titles or topics in guide files
    - Use `Read` tool to examine potentially related guides
-2. **Determine action**: If similar documentation exists:
+4. **Determine action**: If similar documentation exists:
    - Ask user whether to update existing guide or create new one
-   - If updating: proceed to step 6 (use Edit tool)
-   - If creating new: proceed to step 3
-3. **Ensure directory exists**: Use `Bash(mkdir -p .context1000/guides)`
-4. **Convert title to slug**: "Working with InstantDB" → "working-with-instantdb"
-5. **Create file**: Use `Write` tool with path `.context1000/guides/{slug}.guide.md`
-6. **Populate/update content**: Include frontmatter (name, title, tags, related) and template sections
-7. **Verify**: Use `Read` tool to confirm file was created/updated correctly
-8. **Report**: Display success message with file path
+   - If updating: proceed to step 8 (use Edit tool)
+   - If creating new: proceed to step 5
+5. **Ensure directory exists**: Use `Bash(mkdir -p {basePath})`
+6. **Convert title to slug**: "Working with InstantDB" → "working-with-instantdb"
+7. **Create file**: Use `Write` tool with path `{basePath}/{slug}.guide.md`
+8. **Populate/update content**: Include frontmatter (name, title, tags, related) and template sections
+9. **Verify**: Use `Read` tool to confirm file was created/updated correctly
+10. **Report**: Display success message with file path and scope (root-level or project-scoped)
 
 ## Organization
 
