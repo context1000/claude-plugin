@@ -146,6 +146,8 @@ Follow these steps to create or update the RFC:
 6. **Convert title to slug**: "Add Multi-Tenancy Support" → "add-multi-tenancy-support"
 7. **Create file**: Use `Write` tool with path `{basePath}/{slug}.rfc.md`
 8. **Populate/update content**: Include frontmatter (name, title, status: draft, tags, related) and template sections
+   - **IMPORTANT**: If `--project` flag was specified, automatically add the project name to the `related.projects` field in frontmatter
+   - Example: `related: { projects: [mobile-app] }` if `--project mobile-app` was used
 9. **Verify**: Use `Read` tool to confirm file was created/updated correctly
 10. **Report**: Display success message with file path and scope (root-level or project-scoped)
 

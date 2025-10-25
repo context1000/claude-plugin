@@ -156,34 +156,45 @@ Include skill-detected opportunities, reference skill recommendations, and flag 
 ### RFC Creation
 
 - **When**: Only when user explicitly requests RFC
-- **Command**: `/archdocs:rfc "<title>"`
+- **Command**: `/archdocs:rfc "<title>" [--project <projectName>]`
 - **Tool**: `SlashCommand`
-- **Target structure**: Command creates `.context1000/decisions/rfc/{title-slug}.rfc.md`
+- **Target structure**: Command creates `.context1000/decisions/rfc/{title-slug}.rfc.md` (root-level) or `.context1000/projects/{projectName}/decisions/rfc/{title-slug}.rfc.md` (project-scoped)
+- **Auto-linking**: When `--project` flag is specified, the project name is automatically added to `related.projects` field in frontmatter
 - **Validation**: After command, use `Read` to verify file exists at correct path
 
 ### ADR Creation
 
 - **When**: Only when user explicitly requests ADR
-- **Command**: `/archdocs:adr "<title>"`
+- **Command**: `/archdocs:adr "<title>" [--project <projectName>]`
 - **Tool**: `SlashCommand`
-- **Target structure**: Command creates `.context1000/decisions/adr/{title-slug}.adr.md`
+- **Target structure**: Command creates `.context1000/decisions/adr/{title-slug}.adr.md` (root-level) or `.context1000/projects/{projectName}/decisions/adr/{title-slug}.adr.md` (project-scoped)
+- **Auto-linking**: When `--project` flag is specified, the project name is automatically added to `related.projects` field in frontmatter
 - **Validation**: After command, use `Read` to verify file exists at correct path
 
 ### Guide Creation
 
 - **When**: After proposing and getting user approval
-- **Command**: `/archdocs:guide "<topic>"`
+- **Command**: `/archdocs:guide "<topic>" [--project <projectName>]`
 - **Tool**: `SlashCommand`
-- **Target structure**: Command creates `.context1000/guides/{topic-slug}.guide.md`
+- **Target structure**: Command creates `.context1000/guides/{topic-slug}.guide.md` (root-level) or `.context1000/projects/{projectName}/guides/{topic-slug}.guide.md` (project-scoped)
+- **Auto-linking**: When `--project` flag is specified, the project name is automatically added to `related.projects` field in frontmatter
 - **Validation**: After command, use `Read` to verify file exists at correct path
 
 ### Rule Creation
 
 - **When**: After proposing and getting user approval
-- **Command**: `/archdocs:rule "<name>"`
+- **Command**: `/archdocs:rule "<name>" [--project <projectName>]`
 - **Tool**: `SlashCommand`
-- **Target structure**: Command creates `.context1000/rules/{name-slug}.rules.md`
+- **Target structure**: Command creates `.context1000/rules/{name-slug}.rules.md` (root-level) or `.context1000/projects/{projectName}/rules/{name-slug}.rules.md` (project-scoped)
 - **Validation**: After command, use `Read` to verify file exists at correct path
+
+### Project Creation
+
+- **When**: When user requests to create a new project structure
+- **Command**: `/archdocs:project "<projectName>"`
+- **Tool**: `SlashCommand`
+- **Target structure**: Command creates `.context1000/projects/{projectName}/` with subdirectories (decisions/adr/, decisions/rfc/, guides/, rules/) and project.md file
+- **Validation**: After command, use `Read` to verify project.md exists at `.context1000/projects/{projectName}/project.md`
 
 ## Expected .context1000 Structure (READ-ONLY for you)
 
@@ -193,7 +204,15 @@ Include skill-detected opportunities, reference skill recommendations, and flag 
 │   ├── adr/        # *.adr.md files (created by /archdocs:adr)
 │   └── rfc/        # *.rfc.md files (created by /archdocs:rfc)
 ├── guides/         # *.guide.md files (created by /archdocs:guide)
-└── rules/          # *.rules.md files (created by /archdocs:rule)
+├── rules/          # *.rules.md files (created by /archdocs:rule)
+└── projects/       # Project-scoped documentation
+    └── {projectName}/
+        ├── decisions/
+        │   ├── adr/    # *.adr.md files (created by /archdocs:adr --project {projectName})
+        │   └── rfc/    # *.rfc.md files (created by /archdocs:rfc --project {projectName})
+        ├── guides/     # *.guide.md files (created by /archdocs:guide --project {projectName})
+        ├── rules/      # *.rules.md files (created by /archdocs:rule --project {projectName})
+        └── project.md  # Project metadata (created by /archdocs:project)
 ```
 
 **You NEVER create this structure.** The slash commands handle it.
@@ -236,10 +255,14 @@ Include skill-detected opportunities, reference skill recommendations, and flag 
 
 - a) **State intention**: "Creating guide: InstantDB integration"
 - b) **Invoke SlashCommand**: Use exact command format
-  - Example: `SlashCommand` tool with `command: "/archdocs:guide \"InstantDB integration\""`
+  - Example (root-level): `SlashCommand` tool with `command: "/archdocs:guide \"InstantDB integration\""`
+  - Example (project-scoped): `SlashCommand` tool with `command: "/archdocs:guide \"InstantDB integration\" --project mobile-app"`
   - Note: Commands now automatically check for existing similar documentation and may ask user whether to update existing or create new
+  - Note: When using `--project` flag, the command automatically adds project name to `related.projects` field in frontmatter
 - c) **Wait for command result**: Command will create or update file in correct location
-- d) **Verify with Read**: Use `Read` tool to check file exists at path like `.context1000/guides/instantdb-integration.guide.md`
+- d) **Verify with Read**: Use `Read` tool to check file exists at correct path
+  - Root-level: `.context1000/guides/instantdb-integration.guide.md`
+  - Project-scoped: `.context1000/projects/mobile-app/guides/instantdb-integration.guide.md`
 - e) **Report**: State actual file path created/updated, list TODOs
 
 **CRITICAL**: If you attempt to create files any other way, you are violating your core constraints.

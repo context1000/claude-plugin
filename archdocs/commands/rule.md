@@ -110,6 +110,8 @@ Follow these steps to create or update the rule:
 6. **Convert title to slug**: "All APIs Must Use Authentication" → "all-apis-must-use-authentication"
 7. **Create file**: Use `Write` tool with path `{basePath}/{slug}.rules.md`
 8. **Populate/update content**: Include frontmatter (name, title, tags, related) and template sections
+   - **IMPORTANT**: If `--project` flag was specified, automatically add the project name to the `related.projects` field in frontmatter
+   - Example: `related: { projects: [frontend-app] }` if `--project frontend-app` was used
 9. **Verify**: Use `Read` tool to confirm file was created/updated correctly
 10. **Report**: Display success message with file path and scope (root-level or project-scoped)
 

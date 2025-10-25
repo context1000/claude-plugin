@@ -116,6 +116,8 @@ Follow these steps to create or update the guide:
 6. **Convert title to slug**: "Working with InstantDB" → "working-with-instantdb"
 7. **Create file**: Use `Write` tool with path `{basePath}/{slug}.guide.md`
 8. **Populate/update content**: Include frontmatter (name, title, tags, related) and template sections
+   - **IMPORTANT**: If `--project` flag was specified, automatically add the project name to the `related.projects` field in frontmatter
+   - Example: `related: { projects: [user-service] }` if `--project user-service` was used
 9. **Verify**: Use `Read` tool to confirm file was created/updated correctly
 10. **Report**: Display success message with file path and scope (root-level or project-scoped)
 

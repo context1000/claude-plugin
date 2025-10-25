@@ -167,7 +167,15 @@ Skills findings should inform Architect Action Items:
 │   ├── adr/        (*.adr.md)
 │   └── rfc/        (*.rfc.md)
 ├── guides/         (*.guide.md in nested dirs allowed)
-└── rules/          (*.rules.md in nested dirs allowed)
+├── rules/          (*.rules.md in nested dirs allowed)
+└── projects/       (project-scoped documentation)
+    └── {projectName}/
+        ├── decisions/
+        │   ├── adr/    (*.adr.md)
+        │   └── rfc/    (*.rfc.md)
+        ├── guides/     (*.guide.md)
+        ├── rules/      (*.rules.md)
+        └── project.md  (project metadata)
 ```
 
 ## Input Contract (from context1000-architect)
@@ -185,9 +193,11 @@ Follow these deterministic phases. After each phase, list issues and apply minim
 
 ### 1) Structure Validation
 
-- Required directories exist (decisions/adr, decisions/rfc, guides, rules).
+- Required root directories exist (decisions/adr, decisions/rfc, guides, rules, projects).
+- Project directories (if any) have correct structure (decisions/adr, decisions/rfc, guides, rules, project.md).
 - Files live in correct locations; extensions match type.
 - No stray/duplicated docs in wrong folders.
+- Each project directory contains a valid project.md file.
 
 ### 2) File Naming Validation
 
@@ -197,7 +207,9 @@ Follow these deterministic phases. After each phase, list issues and apply minim
   - RFC:  `{name}.rfc.md`
   - Guide:`{name}.guide.md`
   - Rule: `{name}.rules.md`
+  - Project: `project.md` (always named exactly this)
 - `name` in frontmatter MUST equal filename stem.
+- Project names in `projects/{projectName}/` must be kebab-case.
 
 ### 3) Frontmatter Validation
 
@@ -236,12 +248,30 @@ related:
 ---
 ```
 
+**Project:**
+
+```yaml
+---
+name: string              # equals project directory name
+title: string
+tags: []
+repository: string        # optional repository URL
+related:
+  rfcs: []
+  adrs: []
+  rules: []
+  guides: []
+  projects: []
+---
+```
+
 Checks:
 
 - YAML parseable; required fields present.
-- `name` matches filename stem (kebab-case).
+- `name` matches filename stem (kebab-case) or project directory name (for project.md).
 - Valid `status` (ADR/RFC only).
 - All `related.*` arrays exist (can be empty).
+- For project-scoped artifacts, verify project name in `related.projects` matches parent project directory.
 
 ### 4) Content Structure Validation
 
@@ -251,14 +281,16 @@ Checks:
   `## Risks and open questions`
 - **Guide**: ≥ 2 `##` sections with practical content.
 - **Rule**: clear rule statement + numbered requirements.
+- **Project**: Brief description (2-3 sentences max) after frontmatter.
 
 General checks:
 
 - No empty sections.
 - **STRICT SIZE LIMITS**: Flag documents or sections exceeding word counts specified above.
-- **Section limits**: ADR sections max 100 words; RFC sections max 75-100 words each; Guide sections max 150 words; Rule sections max 50 words.
+- **Section limits**: ADR sections max 100 words; RFC sections max 75-100 words each; Guide sections max 150 words; Rule sections max 50 words; Project description max 50 words.
 - Code blocks use language specifiers.
 - No `TODO` / `FIXME`.
+- For project-scoped artifacts: verify they're located in correct project subdirectory.
 
 ### 5) Cross-Reference Validation
 
