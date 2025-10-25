@@ -75,7 +75,8 @@ process.stdin.on('end', () => {
           recentContext.includes('/archdocs:guide') ||
           recentContext.includes('/archdocs:adr') ||
           recentContext.includes('/archdocs:rfc') ||
-          recentContext.includes('/archdocs:rule');
+          recentContext.includes('/archdocs:rule') ||
+          recentContext.includes('/archdocs:project');
 
         // Check for documentation-writer agent in recent lines
         isDocumentationWriter =
