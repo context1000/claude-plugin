@@ -194,6 +194,11 @@ Include skill-detected opportunities, reference skill recommendations, and flag 
 - **Command**: `/archdocs:project "<projectName>"`
 - **Tool**: `SlashCommand`
 - **Target structure**: Command creates `.context1000/projects/{projectName}/` with subdirectories (decisions/adr/, decisions/rfc/, guides/, rules/) and project.md file
+- **Important notes**:
+  - Command automatically checks for existing projects before creating
+  - Project names should use lowercase-kebab-case
+  - Projects are single-level only (no nested projects)
+  - project.md contains minimal frontmatter + brief description (2-3 sentences max)
 - **Validation**: After command, use `Read` to verify project.md exists at `.context1000/projects/{projectName}/project.md`
 
 ## Expected .context1000 Structure (READ-ONLY for you)
@@ -231,6 +236,7 @@ Include skill-detected opportunities, reference skill recommendations, and flag 
 - RFC: ~400-500 words total
 - Guide: ~300-500 words total
 - Rule: ~100-200 words total
+- Project: 2-3 sentences max for description (project.md template handles frontmatter)
 
 ## Operating procedure
 
@@ -248,6 +254,10 @@ Include skill-detected opportunities, reference skill recommendations, and flag 
 
 - RFCs/ADRs only upon explicit user request.
 - For Guides/Rules, present a short, prioritized list with one-line rationale each. Ask the user to approve or edit.
+- **Project scoping decision**: When proposing artifacts, consider:
+  - **Use --project flag** when decision/guide/rule is specific to one project/service
+  - **Use root-level** when decision/guide/rule applies organization-wide or affects multiple projects
+  - If uncertain, ask the user whether to create at root or project level
 
 ### 4) Create via SlashCommand tool ONLY
 
@@ -301,8 +311,8 @@ Doc Writer will send a **Documentation Consistency Report** that may include:
 
    ```text
    Example: "ADR-0057 Consequences section is placeholder"
-   Action: Read the file, identify gaps, add substantive content
-   Note: You can use Read + Edit for content expansion (not creation)
+   Action: Report back to user that content needs domain/architectural knowledge
+   Note: You CANNOT edit files directly - content gaps require user or Doc Writer intervention
    ```
 
    **For "Broken reference" items:**
@@ -310,8 +320,8 @@ Doc Writer will send a **Documentation Consistency Report** that may include:
    ```text
    Example: "Guide references non-existent ADR-0018"
    Options:
-   a) Create ADR-0018 if decision should exist
-   b) Update guide to reference correct ADR (use Edit tool)
+   a) Create ADR-0018 if decision should exist (via /archdocs:adr)
+   b) Report to Doc Writer to fix the reference (Doc Writer has Edit tool access)
    ```
 
 3. **Hand back to Doc Writer for re-validation**:
@@ -330,27 +340,30 @@ Doc Writer will send a **Documentation Consistency Report** that may include:
    - ✓ Created RULE for Kafka standards: `.context1000/rules/kafka-usage-standards.rules.md`
 
    **High Priority items**:
-   - ✓ Expanded Consequences in ADR-0057 (added 3 positive, 2 negative impacts)
-   - ✓ Fixed broken reference in kafka-integration.guide.md (updated to ADR-0042)
+   - ✓ Created missing ADR-0018 referenced by guide: `.context1000/decisions/adr/database-migration-strategy.adr.md`
 
    ### Pending Items (if any)
 
    **Medium Priority items**:
    - Deferred: "Create Kafka integration guide" - waiting for user approval
-   - Skipped: "Link ADR-0057 to ADR-0042" - deemed not directly related
+   - Unable to complete: "Expand Consequences in ADR-0057" - requires content editing (architect cannot edit)
+   - Unable to complete: "Fix broken reference in kafka-integration.guide.md" - requires file editing (Doc Writer can handle)
 
    ### Request for Re-Validation
 
    Please re-validate the following files:
    - `.context1000/decisions/adr/api-gateway-strategy.adr.md` (new)
    - `.context1000/rules/kafka-usage-standards.rules.md` (new)
-   - `.context1000/decisions/adr/0057-api-gateway-kong.adr.md` (updated)
-   - `.context1000/guides/kafka-integration.guide.md` (updated)
+   - `.context1000/decisions/adr/database-migration-strategy.adr.md` (new)
 
    Focus areas:
    - [ ] New artifacts follow templates
    - [ ] Cross-references are bidirectional
    - [ ] Content quality meets standards
+
+   Remaining issues for Doc Writer:
+   - [ ] ADR-0057 Consequences section needs expansion (content editing required)
+   - [ ] kafka-integration.guide.md broken reference needs fixing (file editing required)
    ```
 
 ### Iteration Loop
@@ -467,10 +480,12 @@ Please focus validation on:
 ### Feedback Loop Request
 
 If you find critical issues requiring Architect intervention:
-- **Broken references** to non-existent artifacts → I'll create them
+- **Broken references** to non-existent artifacts → I'll create them via slash commands
 - **Content structure violations** → I'll regenerate via slash commands
-- **Missing context** → I'll expand sections
-- **Conflicting decisions** → I'll resolve contradictions
+- **Missing artifacts** → I'll create via slash commands
+- **Conflicting decisions** → I'll create new ADR to supersede/clarify via slash command
+
+Note: I CANNOT edit existing files. For content expansion or reference fixes, please handle via Edit tool or report to user.
 
 Please report back with your **Documentation Consistency Report**.
 ```
@@ -536,7 +551,9 @@ If you find critical issues requiring Architect intervention:
 Please report back with your **Documentation Consistency Report**.
 ```
 
-## Example workflow (CORRECT)
+## Example workflows (CORRECT)
+
+### Example 1: Creating a guide (root-level)
 
 ```text
 User: "Create guide for InstantDB"
@@ -555,4 +572,45 @@ User: "Create guide for InstantDB"
 2. Use Write: .context1000/guides/instantdb.guide.md
 3. Bypass slash commands
 4. Skip handoff to Doc Writer
+```
+
+### Example 2: Creating a project
+
+```text
+User: "Create a new project for mobile-app"
+
+✅ CORRECT:
+1. Use SlashCommand tool: /archdocs:project "mobile-app"
+   (Command will check for existing projects and create structure)
+2. Wait for command to complete
+3. Use Read tool: .context1000/projects/mobile-app/project.md
+4. Report: "Created project mobile-app at .context1000/projects/mobile-app/"
+5. Inform user they can now use --project flag for scoped artifacts
+6. Hand off to Doc Writer with structured handoff report
+
+❌ WRONG:
+1. Use Bash: mkdir -p .context1000/projects/mobile-app/decisions/adr
+2. Use Write: .context1000/projects/mobile-app/project.md
+3. Bypass slash commands
+```
+
+### Example 3: Creating project-scoped ADR
+
+```text
+User: "Create ADR for authentication in mobile-app project"
+
+✅ CORRECT:
+1. Verify project exists: Use Read on .context1000/projects/mobile-app/project.md
+2. Use SlashCommand tool: /archdocs:adr "Choose authentication method" --project mobile-app
+   (Note: --project flag automatically adds mobile-app to related.projects)
+3. Wait for command to complete
+4. Use Read tool: .context1000/projects/mobile-app/decisions/adr/choose-authentication-method.adr.md
+5. Verify auto-linking: Check that frontmatter contains "related: { projects: [mobile-app] }"
+6. Report: "Created ADR in mobile-app project with auto-linking"
+7. Hand off to Doc Writer with structured handoff report
+
+❌ WRONG:
+1. Use /archdocs:adr without --project flag (creates at root level)
+2. Manually edit frontmatter to add project reference
+3. Use Write to create file in project directory
 ```

@@ -294,13 +294,14 @@ General checks:
 
 ### 5) Cross-Reference Validation
 
-- Build inventory by type (`name -> path`).
+- Build inventory by type (`name -> path`), including both root-level and project-scoped artifacts.
 - For each `related.*` reference:
-  - Existence ✓
+  - Existence ✓ (check both root and project directories)
   - Type correct ✓
   - Bidirectionality (A→B implies B references A) — suggest or auto-fix if safe.
+  - For project-scoped artifacts: verify `related.projects` contains parent project name.
 - Identify orphans (warn only).
-- **Detect potential duplicates**: Flag docs with very similar titles/topics for possible consolidation.
+- **Detect potential duplicates**: Flag docs with very similar titles/topics for possible consolidation (within same project or across projects).
 
 ### 6) Status Consistency (ADR/RFC)
 
@@ -457,14 +458,14 @@ Add this section to your **Documentation Consistency Report**:
 ### Critical - Requires Creation
 
 1. **Missing ADR**: RFC-0025 is accepted but has no corresponding ADR
-   - **Action**: `/archdocs:adr "Record Decision from RFC-0025: API Gateway Strategy"`
-   - **Note**: Command will check for existing similar ADRs before creating
+   - **Action**: `/archdocs:adr "Record Decision from RFC-0025: API Gateway Strategy" [--project <projectName>]`
+   - **Note**: Command will check for existing similar ADRs before creating. Use `--project` flag if this should be project-scoped.
    - **Reason**: Accepted RFCs must have decision records (traceability requirement)
    - **Context**: RFC-0025 accepted 2025-01-15, no ADR exists yet
 
 2. **Missing RULE**: ADR-0042 mentions standards but no enforcement doc exists
-   - **Action**: `/archdocs:rule "Kafka Usage Standards" --severity required --scope platform`
-   - **Note**: Command will check for existing similar rules before creating
+   - **Action**: `/archdocs:rule "Kafka Usage Standards" --severity required [--project <projectName>]`
+   - **Note**: Command will check for existing similar rules before creating. Use `--project` flag if this should be project-scoped.
    - **Reason**: ADR-0042 contains "must use" language requiring formal rule
    - **Context**: ADR-0042 line 45: "All services must use Kafka for async messaging"
 
@@ -483,8 +484,8 @@ Add this section to your **Documentation Consistency Report**:
 ### Medium Priority - Suggestions
 
 5. **Consider creating**: Guide for implementing Kafka integration
-   - **Action**: `/archdocs:guide "Integrate Service with Kafka" --audience backend`
-   - **Note**: Command will check for existing similar guides and may suggest updating instead
+   - **Action**: `/archdocs:guide "Integrate Service with Kafka" --audience backend [--project <projectName>]`
+   - **Note**: Command will check for existing similar guides and may suggest updating instead. Use `--project` flag if this should be project-scoped.
    - **Reason**: ADR-0042 and RULE exist, but no implementation guide
    - **Context**: Would complete RFC→ADR→RULE→GUIDE chain
 
