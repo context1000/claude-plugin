@@ -5,8 +5,8 @@
   },
   "plugins": [
     {
-      "name": "archdocs",
-      "source": "./archdocs",
+      "name": "context1000",
+      "source": "./context1000",
       "description": "context1000 documentation management plugin for creating RFCs, ADRs, Guides, and Rules"
     }
   ]
