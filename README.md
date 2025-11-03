@@ -1,23 +1,25 @@
 # context1000/claude-plugin
 
-Quick-start guide for using the context1000 documentation system with Claude Code.
+Claude plugin with 2 sub-agents, 5 commands for creating architecture documentation with context1000
+
+![context1000/claude-plugin](./images/claude-plugin.png)
 
 ## Installation
 
 ```bash
-# Clone or download this plugin to your Claude Code plugins directory
-claude-code plugin install context1000
+claude
+/plugin marketplace add https://github.com/context1000/claude-plugin
 ```
-
-Or add manually to your `~/.claude-code/plugins/` directory.
 
 ## What is context1000?
 
 context1000 is a strict documentation format designed for AI agents that organizes architectural knowledge into four artifact types: **decisions** (RFCs and ADRs), **rules**, **guides**, and **projects**. It captures both the reasoning behind decisions and the actionable requirements that follow, enabling AI systems to understand not just what to do, but why.
 
-Learn more: [context1000 docs](https://github.com/context1000/docs)
+Learn more: [context1000](https://github.com/context1000/docs)
 
-## Slash Commands
+## Claude **slash commands**
+
+![context1000 claude slash commands](./images/claude-commands.png)
 
 Create documentation artifacts using structured commands:
 
@@ -42,14 +44,9 @@ Create documentation artifacts using structured commands:
 /context1000:project "mobile-app"
 ```
 
-### Project Scoping
+## Claude **Subagents**
 
-- **Root-level** (no `--project` flag): Organization-wide decisions, guides, and rules
-- **Project-scoped** (with `--project` flag): Project-specific documentation
-
-Commands automatically create proper directory structure and link artifacts to projects.
-
-## AI Agents
+![context1000 claude subagents](./images/claude-subagent.png)
 
 Two specialized agents work together to maintain your documentation:
 
@@ -114,22 +111,6 @@ The plugin includes 11 specialized skills that work proactively:
 - And 6 more for glossaries, examples, cross-linking, and style editing
 
 Skills activate automatically based on context (e.g., detecting technology changes triggers ADR opportunity detection).
-
-## Quick Example
-
-```bash
-# 1. Create a project for your service
-/context1000:project "user-service"
-
-# 2. Document an architectural decision
-/context1000:adr "Choose PostgreSQL for user data" --project user-service
-
-# 3. Create a guide for developers
-/context1000:guide "Database migrations" --project user-service
-
-# 4. Let the agents validate and maintain
-@context1000:context1000-documentation-writer validate the user-service docs
-```
 
 ---
 
