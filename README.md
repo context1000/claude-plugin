@@ -6,8 +6,9 @@ Claude plugin with 2 sub-agents, 5 commands for creating architecture documentat
 
 ## Installation
 
+Run claude CLI and install the plugin:
+
 ```bash
-claude
 /plugin marketplace add https://github.com/context1000/claude-plugin
 ```
 
