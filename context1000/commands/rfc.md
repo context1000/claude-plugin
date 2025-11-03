@@ -72,12 +72,25 @@ name: { title-slug } # Unique identifier for the RFC
 title: { Title } # Human-readable title
 status: draft # accepted, rejected, draft, review, deprecated
 tags: [] # Categorization tags
+slug: /decisions/rfc/{ title-slug }.rfc/ # URL slug for the document
 related: # Cross-references to related documents (one or many)
   rfcs: [] # Related RFCs by name
   adrs: [] # Related ADRs by name
   rules: [] # Related rules by name
   guides: [] # Related guides by name
   projects: [] # Related projects by name
+  depends-on: # Dependencies - documents that must exist/be decided first
+    adrs: [] # ADRs this depends on
+    rfcs: [] # RFCs this depends on
+    guides: [] # Guides this depends on
+    rules: [] # Rules this depends on
+    projects: [] # Projects this depends on
+  supersedes: # Documents that this replaces/deprecates
+    adrs: [] # ADRs this supersedes
+    rfcs: [] # RFCs this supersedes
+    guides: [] # Guides this supersedes
+    rules: [] # Rules this supersedes
+    projects: [] # Projects this supersedes
 ---
 
 ## Summary
@@ -146,9 +159,11 @@ Follow these steps to create or update the RFC:
 5. **Ensure directory exists**: Use `Bash(mkdir -p {basePath})`
 6. **Convert title to slug**: "Add Multi-Tenancy Support" → "add-multi-tenancy-support"
 7. **Create file**: Use `Write` tool with path `{basePath}/{slug}.rfc.md`
-8. **Populate/update content**: Include frontmatter (name, title, status: draft, tags, related) and template sections
+8. **Populate/update content**: Include frontmatter (name, title, status: draft, tags, slug, related with depends-on and supersedes subsections) and template sections
    - **IMPORTANT**: If `--project` flag was specified, automatically add the project name to the `related.projects` field in frontmatter
    - Example: `related: { projects: [mobile-app] }` if `--project mobile-app` was used
+   - Slug format for root-level: `/decisions/rfc/{slug}.rfc/`
+   - Slug format for project-scoped: `/projects/{projectName}/decisions/rfc/{slug}.rfc/`
 9. **Verify**: Use `Read` tool to confirm file was created/updated correctly
 10. **Report**: Display success message with file path and scope (root-level or project-scoped)
 
@@ -166,7 +181,7 @@ RFCs use these status values:
 
 After creating the RFC, display:
 
-```
+```text
 ✓ Created RFC: {Title}
   Location: .context1000/decisions/rfc/{title-slug}.rfc.md
   Name: {title-slug}

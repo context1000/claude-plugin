@@ -68,12 +68,25 @@ Create the guide file with this structure:
 name: { title-slug } # Unique identifier for the guide
 title: { Title } # Human-readable title
 tags: [] # Categorization tags
+slug: /guides/{ title-slug }.guide/ # URL slug for the document
 related: # Cross-references to related documents (one or many)
   rfcs: [] # Related RFCs by name
   adrs: [] # Related ADRs by name
   rules: [] # Related rules by name
   guides: [] # Related guides by name
   projects: [] # Related projects by name
+  depends-on: # Dependencies - documents that must exist/be decided first
+    adrs: [] # ADRs this depends on
+    rfcs: [] # RFCs this depends on
+    guides: [] # Guides this depends on
+    rules: [] # Rules this depends on
+    projects: [] # Projects this depends on
+  supersedes: # Documents that this replaces/deprecates
+    adrs: [] # ADRs this supersedes
+    rfcs: [] # RFCs this supersedes
+    guides: [] # Guides this supersedes
+    rules: [] # Rules this supersedes
+    projects: [] # Projects this supersedes
 ---
 
 # {Title}
@@ -116,9 +129,11 @@ Follow these steps to create or update the guide:
 5. **Ensure directory exists**: Use `Bash(mkdir -p {basePath})`
 6. **Convert title to slug**: "Working with InstantDB" → "working-with-instantdb"
 7. **Create file**: Use `Write` tool with path `{basePath}/{slug}.guide.md`
-8. **Populate/update content**: Include frontmatter (name, title, tags, related) and template sections
+8. **Populate/update content**: Include frontmatter (name, title, tags, slug, related with depends-on and supersedes subsections) and template sections
    - **IMPORTANT**: If `--project` flag was specified, automatically add the project name to the `related.projects` field in frontmatter
    - Example: `related: { projects: [user-service] }` if `--project user-service` was used
+   - Slug format for root-level: `/guides/{slug}.guide/`
+   - Slug format for project-scoped: `/projects/{projectName}/guides/{slug}.guide/`
 9. **Verify**: Use `Read` tool to confirm file was created/updated correctly
 10. **Report**: Display success message with file path and scope (root-level or project-scoped)
 

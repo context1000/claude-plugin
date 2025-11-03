@@ -66,12 +66,25 @@ name: { projectName } # Unique identifier for the project
 title: { ProjectName } # Human-readable title
 tags: [] # Categorization tags
 repository: "" # Project repository URL
+slug: /projects/{ projectName }.project/ # URL slug for the document
 related: # Cross-references to related documents (one or many)
   rfcs: [] # Related RFCs by name
   adrs: [] # Related ADRs by name
   rules: [] # Related rules by name
   guides: [] # Related guides by name
   projects: [] # Related projects by name
+  depends-on: # Dependencies - documents that must exist/be decided first
+    adrs: [] # ADRs this depends on
+    rfcs: [] # RFCs this depends on
+    guides: [] # Guides this depends on
+    rules: [] # Rules this depends on
+    projects: [] # Projects this depends on
+  supersedes: # Documents that this replaces/deprecates
+    adrs: [] # ADRs this supersedes
+    rfcs: [] # RFCs this supersedes
+    guides: [] # Guides this supersedes
+    rules: [] # Rules this supersedes
+    projects: [] # Projects this supersedes
 ---
 
 # {ProjectName}
@@ -97,7 +110,7 @@ Follow these steps to create the project:
    mkdir -p .context1000/projects/{projectName}/rules
    ```
 
-4. **Create project.md**: Use `Write` tool with the template above
+4. **Create project.md**: Use `Write` tool with the template above (include slug format: `/projects/{projectName}.project/`)
 5. **Verify**: Use `Bash(tree)` to display the created structure
 6. **Report**: Display success message with project path and structure
 

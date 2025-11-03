@@ -70,12 +70,25 @@ name: { title-slug } # Unique identifier for the ADR
 title: { Title } # Human-readable title
 status: draft # accepted, rejected, draft
 tags: [] # Categorization tags
+slug: /decisions/adr/{ title-slug }.adr/ # URL slug for the document
 related: # Cross-references to related documents (one or many)
   rfcs: [] # Related RFCs by name
   adrs: [] # Related ADRs by name
   rules: [] # Related rules by name
   guides: [] # Related guides by name
   projects: [] # Related projects by name
+  depends-on: # Dependencies - documents that must exist/be decided first
+    adrs: [] # ADRs this depends on
+    rfcs: [] # RFCs this depends on
+    guides: [] # Guides this depends on
+    rules: [] # Rules this depends on
+    projects: [] # Projects this depends on
+  supersedes: # Documents that this replaces/deprecates
+    adrs: [] # ADRs this supersedes
+    rfcs: [] # RFCs this supersedes
+    guides: [] # Guides this supersedes
+    rules: [] # Rules this supersedes
+    projects: [] # Projects this supersedes
 ---
 
 # {Title}
@@ -130,9 +143,11 @@ Follow these steps to create or update the ADR:
 5. **Ensure directory exists**: Use `Bash(mkdir -p {basePath})`
 6. **Convert title to slug**: "Choose Database Technology" → "choose-database-technology"
 7. **Create file**: Use `Write` tool with path `{basePath}/{slug}.adr.md`
-8. **Populate/update content**: Include frontmatter (name, title, status: draft, tags, related) and template sections
+8. **Populate/update content**: Include frontmatter (name, title, status: draft, tags, slug, related with depends-on and supersedes subsections) and template sections
    - **IMPORTANT**: If `--project` flag was specified, automatically add the project name to the `related.projects` field in frontmatter
    - Example: `related: { projects: [user-service] }` if `--project user-service` was used
+   - Slug format for root-level: `/decisions/adr/{slug}.adr/`
+   - Slug format for project-scoped: `/projects/{projectName}/decisions/adr/{slug}.adr/`
 9. **Verify**: Use `Read` tool to confirm file was created/updated correctly
 10. **Report**: Display success message with file path and scope (root-level or project-scoped)
 

@@ -161,7 +161,8 @@ Include skill-detected opportunities, reference skill recommendations, and flag 
 - **Tool**: `SlashCommand`
 - **Target structure**: Command creates `.context1000/decisions/rfc/{title-slug}.rfc.md` (root-level) or `.context1000/projects/{projectName}/decisions/rfc/{title-slug}.rfc.md` (project-scoped)
 - **Auto-linking**: When `--project` flag is specified, the project name is automatically added to `related.projects` field in frontmatter
-- **Validation**: After command, use `Read` to verify file exists at correct path
+- **Frontmatter includes**: `name`, `title`, `status`, `tags`, `slug`, and `related` (with `depends-on` and `supersedes` subsections)
+- **Validation**: After command, use `Read` to verify file exists at correct path and contains proper frontmatter structure
 
 ### ADR Creation
 
@@ -170,7 +171,8 @@ Include skill-detected opportunities, reference skill recommendations, and flag 
 - **Tool**: `SlashCommand`
 - **Target structure**: Command creates `.context1000/decisions/adr/{title-slug}.adr.md` (root-level) or `.context1000/projects/{projectName}/decisions/adr/{title-slug}.adr.md` (project-scoped)
 - **Auto-linking**: When `--project` flag is specified, the project name is automatically added to `related.projects` field in frontmatter
-- **Validation**: After command, use `Read` to verify file exists at correct path
+- **Frontmatter includes**: `name`, `title`, `status`, `tags`, `slug`, and `related` (with `depends-on` and `supersedes` subsections)
+- **Validation**: After command, use `Read` to verify file exists at correct path and contains proper frontmatter structure
 
 ### Guide Creation
 
@@ -179,7 +181,8 @@ Include skill-detected opportunities, reference skill recommendations, and flag 
 - **Tool**: `SlashCommand`
 - **Target structure**: Command creates `.context1000/guides/{topic-slug}.guide.md` (root-level) or `.context1000/projects/{projectName}/guides/{topic-slug}.guide.md` (project-scoped)
 - **Auto-linking**: When `--project` flag is specified, the project name is automatically added to `related.projects` field in frontmatter
-- **Validation**: After command, use `Read` to verify file exists at correct path
+- **Frontmatter includes**: `name`, `title`, `tags`, `slug`, and `related` (with `depends-on` and `supersedes` subsections)
+- **Validation**: After command, use `Read` to verify file exists at correct path and contains proper frontmatter structure
 
 ### Rule Creation
 
@@ -187,7 +190,8 @@ Include skill-detected opportunities, reference skill recommendations, and flag 
 - **Command**: `/context1000:rule "<name>" [--project <projectName>]`
 - **Tool**: `SlashCommand`
 - **Target structure**: Command creates `.context1000/rules/{name-slug}.rules.md` (root-level) or `.context1000/projects/{projectName}/rules/{name-slug}.rules.md` (project-scoped)
-- **Validation**: After command, use `Read` to verify file exists at correct path
+- **Frontmatter includes**: `name`, `title`, `tags`, `slug`, and `related` (with `depends-on` and `supersedes` subsections)
+- **Validation**: After command, use `Read` to verify file exists at correct path and contains proper frontmatter structure
 
 ### Project Creation
 
@@ -200,7 +204,8 @@ Include skill-detected opportunities, reference skill recommendations, and flag 
   - Project names should use lowercase-kebab-case
   - Projects are single-level only (no nested projects)
   - project.md contains minimal frontmatter + brief description (2-3 sentences max)
-- **Validation**: After command, use `Read` to verify project.md exists at `.context1000/projects/{projectName}/project.md`
+- **Frontmatter includes**: `name`, `title`, `tags`, `repository`, `slug`, and `related` (with `depends-on` and `supersedes` subsections)
+- **Validation**: After command, use `Read` to verify project.md exists at `.context1000/projects/{projectName}/project.md` and contains proper frontmatter structure
 
 ## Expected .context1000 Structure (READ-ONLY for you)
 

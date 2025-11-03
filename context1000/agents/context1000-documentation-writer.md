@@ -224,12 +224,25 @@ name: string # equals filename stem
 title: string
 status: draft|accepted|rejected
 tags: []
+slug: string # URL slug for the document
 related:
   rfcs: []
   adrs: []
   rules: []
   guides: []
   projects: []
+  depends-on: # Dependencies - documents that must exist/be decided first
+    adrs: []
+    rfcs: []
+    guides: []
+    rules: []
+    projects: []
+  supersedes: # Documents that this replaces/deprecates
+    adrs: []
+    rfcs: []
+    guides: []
+    rules: []
+    projects: []
 ---
 ```
 
@@ -240,12 +253,25 @@ related:
 name: string
 title: string
 tags: []
+slug: string # URL slug for the document
 related:
   rfcs: []
   adrs: []
   rules: []
   guides: []
   projects: []
+  depends-on: # Dependencies - documents that must exist/be decided first
+    adrs: []
+    rfcs: []
+    guides: []
+    rules: []
+    projects: []
+  supersedes: # Documents that this replaces/deprecates
+    adrs: []
+    rfcs: []
+    guides: []
+    rules: []
+    projects: []
 ---
 ```
 
@@ -257,12 +283,25 @@ name: string # equals project directory name
 title: string
 tags: []
 repository: string # optional repository URL
+slug: string # URL slug for the document
 related:
   rfcs: []
   adrs: []
   rules: []
   guides: []
   projects: []
+  depends-on: # Dependencies - documents that must exist/be decided first
+    adrs: []
+    rfcs: []
+    guides: []
+    rules: []
+    projects: []
+  supersedes: # Documents that this replaces/deprecates
+    adrs: []
+    rfcs: []
+    guides: []
+    rules: []
+    projects: []
 ---
 ```
 
@@ -271,7 +310,10 @@ Checks:
 - YAML parseable; required fields present.
 - `name` matches filename stem (kebab-case) or project directory name (for project.md).
 - Valid `status` (ADR/RFC only).
+- `slug` field present and properly formatted.
 - All `related.*` arrays exist (can be empty).
+- All `related.depends-on.*` arrays exist (can be empty).
+- All `related.supersedes.*` arrays exist (can be empty).
 - For project-scoped artifacts, verify project name in `related.projects` matches parent project directory.
 
 ### 4) Content Structure Validation
