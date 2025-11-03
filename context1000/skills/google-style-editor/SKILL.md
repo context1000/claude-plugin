@@ -1,5 +1,5 @@
 ---
-name: Google Style Editor
+name: google-style-editor
 description: Edits documentation according to Google Developer Documentation Style Guide - tone, clarity, global audience, headings, lists, tables, and accessibility standards.
 allowed-tools: Read, Grep, Glob, Bash
 ---

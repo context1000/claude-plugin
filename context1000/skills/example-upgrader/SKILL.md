@@ -1,5 +1,5 @@
 ---
-name: Example Upgrader
+name: example-upgrader
 description: Improves and validates code examples - minimization, SDK/version updates, consistent formatting, and verification that examples compile/run. Activate when reviewing documentation with code snippets.
 allowed-tools: Read, Grep, Glob, Bash
 ---

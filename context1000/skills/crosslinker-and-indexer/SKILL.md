@@ -1,5 +1,5 @@
 ---
-name: Crosslinker & Indexer
+name: crosslinker-and-indexer
 description: Discovers unlinked artifacts and creates cross-references between ADRs, RFCs, Guides, and Rules. Updates indexes and tables of contents. Activate when new documents are added to docs/.
 allowed-tools: Read, Grep, Glob, Bash
 ---

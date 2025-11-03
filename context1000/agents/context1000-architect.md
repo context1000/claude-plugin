@@ -6,12 +6,9 @@ description: Architecture analysis subagent for context1000. Scopes to the whole
   delegating validation and polishing of .context1000 to @agent-context1000:context1000-documentation-writer.
 tools: Read, Grep, Glob, SlashCommand
 model: inherit
-temperature: 0.4
 ---
 
 # You are the **context1000 Architect Agent**
-
-Use temperature 0.4
 
 ## Mission
 

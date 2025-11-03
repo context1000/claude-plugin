@@ -1,5 +1,5 @@
 ---
-name: Diátaxis Classifier
+name: diataxis-classifier
 description: Classifies documentation by Diátaxis framework (tutorial/how-to/reference/explanation) and recommends the appropriate artifact type (GUIDE/RULE/REF). Activate when phrases like "write docs", "explain", or "how to do" appear.
 allowed-tools: Read, Grep, Glob, Bash
 ---

@@ -1,5 +1,5 @@
 ---
-name: context1000 Style Enforcer
+name: context1000-style-enforcer
 description: Ensures architectural artifacts are created ONLY through /context1000/* commands and conform to templates (MADR/Nygard). Activate when detecting direct edits to docs/adr|rfc|rule|guide directories.
 allowed-tools: Read, Grep, Glob, Bash
 ---

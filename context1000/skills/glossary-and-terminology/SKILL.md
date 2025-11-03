@@ -1,5 +1,5 @@
 ---
-name: Glossary & Terminology Harmonizer
+name: glossary-and-terminology-harmonizer
 description: Maintains consistent terminology across documentation. Detects synonyms/ambiguities, builds glossary, enforces inclusive language. Follows Google's "write for a global audience" principles.
 allowed-tools: Read, Grep, Glob, Bash
 ---

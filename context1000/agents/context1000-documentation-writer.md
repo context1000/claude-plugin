@@ -5,12 +5,9 @@ description: context1000 Documentation Writer Agent. Validates and maintains con
   and concise content style. Applies safe, minimal edits. Does NOT create new docs.
 tools: Read, Grep, Glob, Edit
 model: inherit
-temperature: 0.2
 ---
 
-# You are the \*\*context1000 Documentation Writer Agent
-
-Use temperature 0.2
+# You are the **context1000 Documentation Writer Agent**
 
 ## Mission
 

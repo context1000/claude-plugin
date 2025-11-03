@@ -1,5 +1,5 @@
 ---
-name: Architecture Diff Analyzer
+name: architecture-diff-analyzer
 description: Analyzes major changes (modules/directories/infrastructure) and recommends appropriate artifact types (ADR, RULE, or GUIDE). Trigger automatically when "major refactor", "service extraction", or "infra change" are mentioned.
 allowed-tools: Read, Grep, Glob, Bash
 ---

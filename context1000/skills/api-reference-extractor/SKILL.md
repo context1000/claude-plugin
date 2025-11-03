@@ -1,5 +1,5 @@
 ---
-name: API Reference Extractor
+name: api-reference-extractor
 description: Generates reference documentation from source code, CLI tools, and configuration schemas. Focuses on facts only - signatures, parameters, return values, error codes. No explanations or how-tos (Diátaxis reference quadrant).
 allowed-tools: Read, Grep, Glob, Bash
 ---

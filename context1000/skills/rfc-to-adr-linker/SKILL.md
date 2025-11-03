@@ -1,5 +1,5 @@
 ---
-name: RFC→ADR Linker
+name: rfc-to-adr-linker
 description: Links accepted RFCs to corresponding ADRs. Use when RFCs are mentioned, status changes occur, or decisions are made through the RFC process.
 allowed-tools: Read, Grep, Glob, Bash
 ---

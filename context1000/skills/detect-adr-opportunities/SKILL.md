@@ -1,5 +1,5 @@
 ---
-name: Detect ADR Opportunities
+name: detect-adr-opportunities
 description: Identifies architectural decision opportunities during code reviews and changes. Use proactively when reviewing git diffs, commits, or mentions of database migrations, message brokers, caching, protocols, or NFRs (reliability, scalability, security).
 allowed-tools: Read, Grep, Glob, Bash
 ---

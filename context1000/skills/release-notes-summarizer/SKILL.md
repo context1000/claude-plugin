@@ -1,5 +1,5 @@
 ---
-name: Release Notes Summarizer
+name: release-notes-summarizer
 description: Generates release notes from git log/PRs, groups by themes (features/fixes/breaking), links to relevant GUIDE/RULE/ADR. Activate when preparing releases or analyzing version changes.
 allowed-tools: Read, Grep, Glob, Bash
 ---
